@@ -1,0 +1,120 @@
+
+<!-- saved from url=(0094)https://haksa.hallym.ac.kr/hluv/core?attribute=top&fake=Wed%20Aug%2026%2000:15:41%20KST%202020 -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<link rel="StyleSheet" type="text/css" href="./style.css">
+<link rel="stylesheet" type="text/css" href="./tab.css">
+<link rel="stylesheet" type="text/css" href="./jquery-ui-1.9.2.custom.min(1).css">
+<script language="JavaScript" src="./jquery-1.8.3.js.다운로드"></script>
+<script language="JavaScript" src="./jquery-ui-1.9.2.custom.min.js.다운로드"></script>
+<script language="javascript">
+var context = "/hluv";
+var sugangGbn = "null";
+
+function goMenu(div){	
+	var url;
+	switch(div){
+		case '0' : url = '/core?attribute=notice'; break;
+		case '1' : url = '/core?attribute=mainSearch'; break;
+		case '2' : url = '/basket?attribute=mainBasket';break;
+		case '3' : url = '/sugang?attribute=sugangMain';break;
+		case '4' : url = '/withdraw?attribute=mainWithDraw';break;
+		case '5' : url = '/replace?attribute=mainReplace';break;
+		case '6' : url = '/admin?attribute=admin_main';break;
+		//case '7' : url = '/admin?attribute=admin_statistics';break;
+	}
+	// 장바구니수강과 수강신청일 경우만 체크
+	if(div == '2' || div == '3' || div == '4' || div == '5'){		
+		if( div == '2'){
+			sugangGbn = "B";
+		}else if( div == '3' ){
+			sugangGbn = "S";
+		// 철회	
+		}else if( div == '4' ){
+			sugangGbn = "W";
+		// 대체재이수	
+		}else if( div == '5' ){
+			sugangGbn = "R";
+		}
+		url = "/core?attribute=giganChk";
+		
+		$.ajax({
+			type: "POST",
+			data:{sugangGbn:sugangGbn},
+			url: context + url +"&fake=" + new Date(),
+			async:false,
+			success: function(data) {
+				var tmp = eval("("+data+")");
+				if(tmp.code == "999"){
+					alert(tmp.msg);
+					parent.parent.logout(tmp.code);
+				}else if(tmp.code == "200"){
+					if(sugangGbn == 'B'){						
+						var url = "/basket?attribute=mainBasket";
+						goUrl(url, div);
+					}else if(sugangGbn == 'S'){
+						var url = "/sugang?attribute=sugangMain";
+						goUrl(url, div);
+					// 철회	
+					}else if(sugangGbn == 'W'){
+						var url = "/withdraw?attribute=mainWithDraw";
+						goUrl(url, div);
+					// 대체재이수
+					}else if(sugangGbn == 'R'){
+						var url = "/replace?attribute=mainReplace";
+						goUrl(url, div);
+					}else{
+						alert("기간을 알수 없습니다");
+						return;
+					}
+				}else if(tmp.code == "200"){
+					goUrl(tmp.msg, div);
+				}else if(tmp.code == "201"){
+					alert(tmp.msg);
+					goUrl(tmp.msg, div);
+				}else{						
+					top.msgAlert(tmp.msg);
+					return;	
+				}
+			},
+			error: function(req, status, error){
+				alert("code:"+req.status+"\n"+"message:"+req.responseText+"\n"+"error:"+error);
+			}
+		});
+	}else{
+		goUrl(url, div);
+	}
+}
+
+function goUrl(url,div){
+	$("ul li").removeClass('active');
+	  $("ul li").each(function(){
+		$("ul li").eq(div).addClass('active');
+	  });	  
+	 parent.mainFrame.location.href =  context + url + "&token=" + top.getToken() + "&fake="+new Date();
+}
+
+window.onload = function(){
+	goMenu('0');
+}
+
+function logout(){
+	parent.parent.logout();
+}
+
+</script>
+</head>
+<body bgcolor="#F3F3F3">
+<div id="cssmenu">
+<ul>
+	<li class=""><a href="javascript:goMenu(&#39;0&#39;);"><span>공지사항</span></a></li>	
+	<li class="active"><a href="javascript:goMenu(&#39;1&#39;);"><span>조회</span></a></li>
+	<li><a href="javascript:goMenu(&#39;2&#39;);"><span>장바구니신청</span></a></li>
+	<li><a href="javascript:goMenu(&#39;3&#39;);"><span>2학기 수강신청</span></a></li>
+	<li><a href="javascript:goMenu(&#39;4&#39;);"><span>수강신청(철회)</span></a></li>
+	<li><a href="javascript:goMenu(&#39;5&#39;);"><span>수강신청(대체재이수)</span></a></li>
+	
+</ul>
+</div>
+
+</body></html>

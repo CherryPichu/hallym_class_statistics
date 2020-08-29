@@ -1,0 +1,116 @@
+body{ font-family: 돋움; font: 12px "Trebuchet MS", sans-serif;}
+/*일반 텍스트*/
+table { font-family:"돋움","돋움체"; font-size:12px; color:#666666	; text-decoration: none; }
+table.tableList { table-layout:fixed;  }
+table.tableList tr.even { background:#FFFFEA } /* CSS2 나 CSS3 에 even 은 없다 */
+table.tableList tr:hover { background:#E3F2FF } /* 마우스 커서가 올려진 경우라서 모바일에선 무용. :focus 가 아님에 유의 */
+table.tableList th, table.tableList td { padding:5px 2px 2px 2px; text-align:center; font-size:9pt; }
+table.tableList th { color:#0b3e6f; background:#6fa8d2 }
+table.tableList th.end, table.tableList td.end { border-right:none }
+table.tableList td { border-right:1px #F0F0F0 solid; border-bottom:1px #CFCFCF dotted; vertical-align:center; background:#E3F2FF}
+table.tableList td.dot { text-overflow:ellipsis; overflow:hidden; white-space:nowrap; } /* 말줄임 */
+table.tableList td.left { text-align:left; }
+table.tableList td.right { text-align:right; }
+table.tableList td img { vertical-align:middle; }
+
+table.tableList2 { table-layout:fixed; border-top:2px #A6D9DC solid; border-bottom:1px #CFCFCF solid; }
+table.tableList2 tr.even { background:#FFFFEA } /* CSS2 나 CSS3 에 even 은 없다 */
+table.tableList2 tr:hover { background:#E2F2FE } /* 마우스 커서가 올려진 경우라서 모바일에선 무용. :focus 가 아님에 유의 */
+table.tableList2 th, table.tableList2 td { padding:5px 2px 2px 2px; text-align:center; font-size:9pt; }
+table.tableList2 th { border-right:1px #F3D7D7 solid; border-bottom:1px #CFCFCF solid; color:#000000; background:#E3F2FF; }
+table.tableList2 th.end, table.tableList2 td.end { border-right:none }
+table.tableList2 td { border-right:1px #F0F0F0 solid; border-bottom:1px #CFCFCF dotted; vertical-align:center; }
+table.tableList2 td.dot { text-overflow:ellipsis; overflow:hidden; white-space:nowrap; } /* 말줄임 */
+table.tableList2 td.left { text-align:left; }
+table.tableList2 td.right { text-align:right; }
+table.tableList2 td img { vertical-align:middle; }
+
+table.tableList3 { table-layout:fixed; border-top:2px #A6D9DC solid; border-bottom:1px #CFCFCF solid; }
+#table.tableList3 tr.even { background:#FFFFEA } /* CSS2 나 CSS3 에 even 은 없다 */
+#table.tableList3 tr:hover { background:#FCEFEF } /* 마우스 커서가 올려진 경우라서 모바일에선 무용. :focus 가 아님에 유의 */
+table.tableList3 th, table.tableList3 td { padding:1px 1px 1px 1px; text-align:center; font-size:9pt; }
+table.tableList3 th { border-right:1px #F3D7D7 solid; border-bottom:1px #CFCFCF solid; color:#000000; background:#79bcf4; }
+table.tableList3 th.end, table.tableList3 td.end { border-right:none }
+table.tableList3 td { border-right:1px #F0F0F0 solid; border-bottom:1px #CFCFCF dotted; vertical-align:center; }
+table.tableList3 td.dot { text-overflow:ellipsis; overflow:hidden; white-space:nowrap; } /* 말줄임 */
+table.tableList3 td.left { text-align:left; }
+table.tableList3 td.right { text-align:right; }
+table.tableList3 td img { vertical-align:middle; }
+
+table.tableList4 { table-layout:fixed; border-top:1px #C0C0C0 solid; border-bottom:1px #C0C0C0 solid; border-left:1px #C0C0C0 solid; border-right:1px #C0C0C0 solid;}
+table.tableList4 tr.even { background:#FFFFEA } /* CSS2 나 CSS3 에 even 은 없다 */
+table.tableList4 tr:hover { background:#FCEFEF } /* 마우스 커서가 올려진 경우라서 모바일에선 무용. :focus 가 아님에 유의 #CEE3F4; CECDCE D9D9D9*/
+table.tableList4 th, table.tableList4 td { padding:3px 3px 3px 3px; font-size:9pt; }
+table.tableList4 th { border-right:1px #F3D7D7 solid; border-bottom:1px #CFCFCF solid; color:#000000; background:#CCD3AD; }
+table.tableList4 th.end, table.tableList4 td.end { border-right:none }
+table.tableList4 td { border-right:1px #F0F0F0 solid; border-bottom:1px #CFCFCF dotted; vertical-align:center; }
+table.tableList4 td.dot { text-overflow:ellipsis; overflow:hidden; white-space:nowrap; } /* 말줄임 */
+table.tableList4 td.left { text-align:left; }
+table.tableList4 td.right { text-align:right; }
+table.tableList4 td img { vertical-align:middle; }
+.td_label {font-weight:bold;}
+.demoHeaders { margin-top: 2em; }
+.a{ background:#eaf5fe }
+.b{ background:#FFFFFF }
+
+.input_emi { border: 1px solid #ACA899; background-color:#FFFDF9;}
+
+/* CSS3 BUTTON */
+
+.btn {
+	display: inline-block;
+	/*background: url(./html/images/btn_bg.png) repeat-x 0px 0px;*/
+	padding:5px 10px 6px 10px;
+	font-weight:bold;
+	text-shadow: 1px 1px 1px rgba(255,255,255,0.5);
+	/*border:1px solid rgba(0,0,0,0.4);*/
+	-moz-border-radius: 15px;
+	-moz-box-shadow: 0px 0px 2px rgba(0,0,0,0.5);
+	-webkit-border-radius: 15px;
+	-webkit-box-shadow: 0px 0px 2px rgba(0,0,0,0.5);
+}
+
+.btn:hover {
+	text-shadow: 1px 1px 1px rgba(0,0,0,0.5);
+	cursor:pointer;
+}
+
+.btn2 {
+	display: inline-block;
+	padding:4px 4px 4px 4px;
+	font-weight:bold;
+	/*border:1px solid rgba(0,0,0,0.4);*/
+	-moz-border-radius: 15px;
+	-moz-box-shadow: 0px 0px 2px rgba(0,0,0,0.5);
+	/*-webkit-border-radius: 15px;*/
+	-webkit-box-shadow: 0px 0px 2px rgba(0,0,0,0.5);
+}
+
+.btn2:hover {
+	text-shadow: 1px 1px 1px rgba(0,0,0,0.5);
+	cursor:pointer;
+}
+
+/* COLOR VARIATIONS */
+.gray		{background-color: #CCCCCC; color: #000000;}
+.gray:hover	{background-color: #072A60; color: #ffffff;}
+.blue		{background-color: #336698; color: #ffffff;}
+.blue:hover	{background-color: #55aaf2; color: #ffffff;}
+.on	{text-shadow: 1px 1px 1px rgba(0,0,0,0.5);
+	 cursor:pointer;
+	 background-color: brown; color: #ffffff;}
+.on2	{text-shadow: 1px 1px 1px rgba(0,0,0,0.5);
+	 cursor:pointer;
+	 background-color: #ff004e; color: #ffffff;}
+
+.green		{background-color: #6a8d00; color: #000000;}
+.green:hover{background-color: #8aff00; color: #ffffff;}
+
+.red		{background-color: #ff004e; color: #ffffff;}
+.red:hover	{background-color: #55aaf2; color: #ffffff;}
+.title	{text-shadow: 1px 1px 1px rgba(0,0,0,0.5);
+	 cursor:pointer;
+	 background-color: #ff004e; color: #ffffff;}
+/* .ui-jqgrid .ui-jqgrid-btable { cursor : pointer; } */
+SELECT { COLOR: #000000; font-family: 굴림;Verdana, "Times New Roman";	font-size: 9pt; 	line-height: 140%;background-color:#E3F2FF;}
+INPUT {background-color: #E3F2FF;}

@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<!-- saved from url=(0096)https://haksa.hallym.ac.kr/hluv/core?attribute=frame&fake=Wed%20Aug%2026%2000:15:41%20KST%202020 -->
+<html style="height: 100%; overflow: hidden;"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	
+	<title>Frame</title>
+	<meta http-equiv="Pragma" content="no-cache">
+	<meta http-equiv="expires" content="0">
+	<link rel="stylesheet" href="./style.css" type="text/css">
+	<style type="text/css">
+	/**
+	 *	Basic Layout Theme
+	 */
+	.ui-layout-pane { /* all 'panes' */ 
+		border: 1px solid #BBB; 
+	} 
+	.ui-layout-pane-center { /* IFRAME pane */ 
+		padding: 0;
+		margin:  0;
+	} 
+	.ui-layout-pane-west { /* west pane */ 
+		padding: 0 10px; 
+		background-color: #FFF !important;
+		overflow: auto;
+	} 
+
+	.ui-layout-resizer { /* all 'resizer-bars' */ 
+		background: #fff; 
+		} 
+		.ui-layout-resizer-open:hover { /* mouse-over */
+			background: #fff; 
+		}
+
+	.ui-layout-toggler { /* all 'toggler-buttons' */ 
+		background: #E3F2FF;
+		} 
+		.ui-layout-toggler-closed { /* closed toggler-button */ 
+			background: #CCC; 
+			border-bottom: 1px solid #BBB; 
+		} 
+		.ui-layout-toggler .content { /* toggler-text */ 
+			font: 11px bold Verdana, Verdana, Arial, Helvetica, sans-serif;
+		}
+		.ui-layout-toggler:hover { /* mouse-over */ 
+			background: #DCA; 
+			} 
+			.ui-layout-toggler:hover .content { /* mouse-over */ 
+				color: #009; 
+				}
+
+	/* class to make the 'draggable iframe mask' visible */
+	div.ui-draggable-iframeFix {
+		opacity: 0.2 !important;
+		filter:	 alpha(opacity=20) !important;
+		background-color: #666 !important;
+	}
+
+
+	body {
+		background-color: white;
+		font-family: Geneva, Arial, Helvetica, sans-serif;
+	}
+
+	ul { /* basic menu styling */
+		margin:		1ex 0;
+		padding:	0;
+		list-style:	none;
+		position:	relative;
+	}
+	li {
+		padding: 0.15em 1em 0.3em 5px;
+	}
+	</style>
+	<script type="text/javascript" src="./jquery.js.다운로드"></script>
+	<script type="text/javascript" src="./jquery.ui.all.js.다운로드"></script>
+	<script type="text/javascript" src="./jquery.layout.js.다운로드"></script>
+	<script type="text/javascript">
+	var myLayout; // a var is required because this page utilizes: myLayout.allowOverflow() method
+	var context = "/hluv";
+	$(document).ready(function () {
+		myLayout = $('body').layout({
+			west__size:					230
+		,	west__spacing_closed:		20
+		,	west__togglerLength_closed:	100
+		,	west__togglerAlign_closed:	"top"
+		,	west__togglerContent_closed:"개<BR>인<BR>정<BR>보"
+		,	west__togglerTip_closed:	"열기"
+		,	west__sliderTip:			"Slide Open Menu"
+		//,	west__slideTrigger_open:	"mouseover"
+		//,	west__slideTrigger_close:	"mouseout"
+		});
+ 	});
+	
+	function logout(code){
+		if(code != '999'){
+			if(!confirm("로그아웃 하시겠습니까?")){
+				return;
+			}
+		}
+		location.href= context + "/login?attribute=logOut&fake=" + new Date();
+	}
+	
+	
+	
+	</script>
+</head>
+<body style="overflow: hidden; position: relative; height: 100%; margin: 0px; padding: 0px; border: none;">
+
+<iframe id="contentFrame" name="contentFrame" class="ui-layout-center ui-layout-pane ui-layout-pane-center open" width="100%" frameborder="0" scrolling="auto" src="./core.html" pane="center" style="visibility: visible; display: block; position: absolute; margin: 0px; z-index: 2; left: 237px; right: 0px; top: 0px; bottom: 0px; height: 935px; width: 1023px;"></iframe>
+
+<div class="ui-layout-west ui-layout-pane ui-layout-pane-west open" pane="west" style="visibility: visible; display: block; position: absolute; margin: 0px; z-index: 2; left: 0px; right: auto; top: 0px; bottom: 0px; height: 935px; width: 208px;">
+	<p align="center"><img src="./login_logo2.png" valign="top"></p>
+	<br><table class="tableList" width="210">
+	  	  
+	  	<tbody><tr height="30">
+	    	<th colspan="2" height="40" align="center"><b><font color="#fff">2020학년도 2학기 수강신청</font></b></th>
+		</tr><tr>  	
+	  	</tr><tr height="25">
+			<th><font color="#fff">학번</font></th>
+			<td class="left">20205273</td>
+		</tr>
+		<tr height="25">
+			<th><font color="#fff">성명</font></th>
+			<td class="left">허남정</td>
+		</tr>
+		<tr height="25">
+			<th><font color="#fff">임시학년</font></th>
+			<td class="left">1학년</td>
+		</tr>
+		<tr height="25">
+			<th><font color="#fff">이수학기</font></th>
+			<td class="left">1</td>
+		</tr>			
+		<tr height="25">
+			<th><font color="#fff">학적상태</font></th>
+			<td class="left">재학</td>
+		</tr>
+		<tr height="25">
+			<th><font color="#fff">대학</font></th>
+			<td class="left">소프트웨어융합대학</td>
+		</tr>
+		<tr height="25">
+			<th><font color="#fff">학부</font></th>
+			<td class="left">소프트웨어융합대학</td>
+		</tr>
+		<!-- <tr height="25">
+			<th><font color="#fff">학과</font></th>
+			<td class="left"><=sb.getValue("session.hakgwa_nm")%></td>
+		</tr> -->
+		<tr height="25">
+			<th><font color="#fff">소속(전공)</font></th>
+			<td class="left">소프트웨어융합대학</td>
+		</tr>
+		<tr height="25">
+			<th><font color="#fff">부전공</font></th>
+			<td class="left"></td>
+		</tr>
+		<tr height="25">
+			<th><font color="#fff">복수1</font></th>
+			<td class="left"></td>
+		</tr>
+		<tr height="25">
+			<th><font color="#fff">복수2</font></th>
+			<td class="left"></td>
+		</tr>
+		<tr height="25">
+			<th><font color="#fff">복수3</font></th>
+			<td class="left"></td>
+		</tr>
+		<tr height="25">
+			<th><font color="#fff">교직</font></th>
+			<td class="left"></td>
+		</tr>
+		
+		
+	</tbody></table>
+
+	<br>  	
+  	<font size="1">※ 학적사항에 이상이 있는 학생은 <br>교무팀(248-1014~1015)으로 문의 바랍니다.</font>
+  	
+  		
+	  	<p align="center"><span class="btn2 gray" onclick="javascript:logout();" style="width:160px;">로그아웃</span></p>
+</div>
+
+
+<div id="ui-datepicker-div" style="display: none;"></div><span id="" resizer="west" class="ui-layout-resizer ui-layout-resizer-west ui-layout-resizer-open ui-layout-resizer-west-open ui-draggable" title="Resize" style="position: absolute; padding: 0px; margin: 0px; font-size: 1px; text-align: left; overflow: hidden; z-index: 1; left: 230px; height: 937px; width: 7px; top: 0px; cursor: w-resize;"><div id="" title="닫기" class="ui-layout-toggler ui-layout-toggler-west ui-layout-toggler-open ui-layout-toggler-west-open" style="position: absolute; display: block; padding: 0px; margin: 0px; overflow: hidden; text-align: center; font-size: 1px; cursor: pointer; z-index: 1; height: 150px; width: 7px; top: 0px;"><span class="content content-open" style="display: block; margin-top: 42px;">c<br>l<br>o<br>s<br>e</span><span class="content content-closed" style="display: none;">개<br>인<br>정<br>보</span></div></span></body></html>

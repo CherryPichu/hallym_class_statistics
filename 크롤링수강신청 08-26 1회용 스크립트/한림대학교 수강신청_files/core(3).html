@@ -1,0 +1,1051 @@
+<!DOCTYPE html>
+<!-- saved from url=(0184)https://haksa.hallym.ac.kr/hluv/core?attribute=mainSearch&token=&fake=Wed%20Aug%2026%202020%2000:15:53%20GMT+0900%20(%EB%8C%80%ED%95%9C%EB%AF%BC%EA%B5%AD%20%ED%91%9C%EC%A4%80%EC%8B%9C) -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="expires" content="0">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<link rel="StyleSheet" href="./style.css" type="text/css" title="myCSS">
+<style>
+ 	.ui-dialog.message-dialog .ui-widget-header {
+	    background: #A6D9DC;
+	    border: 0;
+	    color: #fff;
+	    font-weight: normal;
+	}
+	.subgrid-cell .ui-helper-hidden { display: none}
+	.subview{font-weight: normal;margin-left:1.7cm;}
+	.normal {
+		color:blue;
+		font-weight: normal;		
+	}
+</style>
+<link rel="stylesheet" type="text/css" media="screen" href="./jquery-ui-1.9.2.custom.min.css">
+<link rel="stylesheet" type="text/css" media="screen" href="./ui.jqgrid.css">
+<style>
+
+.ui-jqgrid tr.jqgrow td {
+	word-wrap: break-word; /* IE 5.5+ and CSS3 */
+	white-space: pre-wrap; /* CSS3 */
+	white-space: -moz-pre-wrap; /* Mozilla, since 1999 */
+	white-space: -pre-wrap; /* Opera 4-6 */
+	white-space: -o-pre-wrap; /* Opera 7 */
+	overflow: hidden;
+	/*height: auto;*/
+	vertical-align: middle;
+	/*padding-top: 1px;
+	padding-bottom: 1px*/
+}
+.ui-jqgrid .ui-jqgrid-htable th div
+{
+	word-wrap: break-word; /* IE 5.5+ and CSS3 */
+	white-space: pre-wrap; /* CSS3 */
+	white-space: -pre-wrap; /* Opera 4-6 */
+	white-space: -o-pre-wrap; /* Opera 7 */
+	white-space: normal !important;
+	height: auto;
+	vertical-align: text-top;
+	padding-top: 2px;
+	padding-bottom: 3px;
+}
+.ui-jqgrid .ui-jqgrid-bdiv{ overflow-x:auto; }
+.ui-widget-header{
+	 color: #0b3e6f;
+}
+.ui-tabs .ui-tabs-panel {
+    padding: 1em 0.3em;
+}
+<!-- 마우스 커서 포인트 -->
+.ui-jqgrid .ui-jqgrid-btable { cursor:pointer; }
+</style>
+<script type="text/javascript" src="./jquery-1.11.0.min.js.다운로드"></script>
+<script type="text/javascript" src="./jquery.jqGrid.min.js.다운로드"></script>
+<script type="text/javascript" src="./jquery-ui-1.9.2.custom.min.js.다운로드"></script>
+<script type="text/javascript">
+var context 		= "/hluv";
+var tab_menu_val 	= "1"; // 개설과목  기본셋팅
+var what_select 	= "N";	// N:선택없음 | S:selectbox | T:text
+var oriFileDateTime	= parent.dataFrame.fileDateTime;
+var nowFileDateTime	= "1598225494000";
+
+ $(function(){
+  // 탭을 밑으로 달려면 이 주석을 풀어줍니다.
+  //$("#siteContentsTabs").addClass("tabs-bottom");
+ 
+  //id 가 Tabs 인 div 태그를 탭형태로 출력해줍니다.
+  //$( "#Tabs" ).tabs({ heightStyle: "auto" });
+  $("#Tabs").tabs().css({
+	  
+		'min-height': 'auto',
+	  
+	   'overflow': 'hidden'
+	});
+ 
+  // fix the classes, 그냥 이렇게 하시면 됩니다.
+  $( ".tabs-bottom .ui-tabs-nav, .tabs-bottom .ui-tabs-nav > *" )
+      .removeClass( "ui-corner-all ui-corner-top" )
+      .addClass( "ui-corner-bottom" );
+ 
+  // 탭을 밑으로 달려면 이 주석을 풀어줍니다.
+  //$( ".tabs-bottom .ui-tabs-nav" ).appendTo( ".tabs-bottom" );
+ 
+  //특정 탭이 활성화 되기 전에 발생하는 이벤트 입니다.
+  //만약 특정 조건일때 특정 탭이 선택이 안되게 하려면,
+  //이 안의 조건절에서 return false; 를 해주면 특정 조건일때는 동작을 안하게 됩니다.
+  $( "#Tabs" ).on( "tabsbeforeactivate", function( event, ui ) {
+	    // 탭의 id 값입니다. 어떤 탭이 눌렸는지 구분할 수 있습니다.
+	    var tab_id = ui.newPanel.attr("id"); 	
+	 	if(tab_id=="tabs-1" || tab_id=="ui-tabs-1"){ //원하시는 조건을 설정합니다.
+	 		tab_menu_val = "1";
+	       $("#tabs-1").show();
+	       $("#tabs-2").hide();	       
+	       $("#tabs-3").hide();
+	       // 개설과목 조회
+	       lectList();
+	       // 개설과목 상세조회
+	       lectListDetail();
+	       
+	 	}else if(tab_id=="tabs-2" || tab_id=="ui-tabs-2"){ //원하시는 조건을 설정합니다.
+	 		tab_menu_val = "2";
+	        $("#tabs-1").hide();
+	        $("#tabs-2").show();	        
+	        $("#tabs-3").hide();
+	        // 장바구니 조회
+	        loadBasket();
+	 	}else if(tab_id=="tabs-3" || tab_id=="ui-tabs-3"){ //원하시는 조건을 설정합니다.
+	 		tab_menu_val = "3";
+	        $("#tabs-1").hide();
+	        $("#tabs-2").hide();	        
+	        $("#tabs-3").show();
+	        // 수강내역조회
+	        loadSugang();
+	 	}
+	 });
+ });
+
+</script>
+<script type="text/javascript">
+	var per 		= 0.98;
+	var maxHeight 	= 310;
+	var token 		= top.getToken();
+	var context 	= "/hluv";
+	var basketUrl 	= context + "/sugang?attribute=sugangBasketListJson&token="+token+"&fake=" + new Date();
+	var sugangUrl 	= context + "/sugang?attribute=sugangListJson&token="+token+"&fake=" + new Date();
+	var isSelect 	= false;
+	
+    window.onload = function(){
+    	
+    	// =============== S : 파일 체크  ==================== //
+    	// 오리지널 파일과 현재 불러온 파일 시간이 같지 않다면...
+    	if( oriFileDateTime != nowFileDateTime ){	
+    		 parent.dataFrame.location.reload();
+    		 alert("개설과목 정보가 관리자에 의해 변경되었습니다.\n화면을 갱신합니다.\n몇번의 깜박거림이 있을 수 있습니다.\n잠시만 기다리세요.");		 
+    		 // 시간을 두고 로딩시킨다. 
+    		 setTimeout("chk_date()",300);	 
+    	}
+    	//파일이 바로 불러오지 않아서 시간을 두고 체크해야한다.
+    	function chk_date(){
+    		 if( nowFileDateTime == parent.dataFrame.fileDateTime ){		 
+    			 window.location.reload();
+    		 }else{
+    			 setTimeout("chk_date()",300);	 
+    		 }
+    	}
+    	//=============== E : 파일 체크  ==================== //
+    	initData();
+		loadTemplet();		
+		$("#oldMenu").val(tab_menu_val);
+    	
+		// 검색조건 : 과목명 조회
+    	$('#s_subj_nm').keypress(function(event){
+    	     if ( event.which == 13 ) {
+    	    	 what_select = "T";
+    	    	 searchData();
+    	         return false;
+    	     }
+    	});
+		
+    	// 탭사이즈 맞추기 - 2018/08/01
+    	$("#Tabs").css('height','500px');
+    }
+    
+	// 초기화 작업
+    function initData(){
+    	tab_menu_val = "1"; // 첫 로딩시 장바구니로 셋팅
+    	// 검색명 초기화
+		$('#s_subj_nm').val("");
+		// 검색명 focus
+		$('#s_subj_nm').focus();
+	}
+    
+    // 템플릿 로드 
+    function loadTemplet(){
+
+		$("#listArea").GridUnload();
+		$("#listLecture").GridUnload();
+		
+		// 개설과목조회
+		if(tab_menu_val == '1'){
+		// 구분 셋팅
+			loadSelectBox('Y'); 
+			// 개설과목 조회
+   			//lectList();
+   			lectListDetail();
+			isSelect = true;
+		// 장바구니	
+		}else if(tab_menu_val == '2'){
+			loadBasket();
+			isSelect = false;
+		}else{
+			// 수강내역
+			loadSugang();
+			isSelect = false;
+		}
+   	}	
+	
+ 	// 이수구분에 대한 셋팅
+	function chgPobtCd(){
+		what_select = "S";
+		//searchData();		
+		loadSelectBox('N');
+				
+		// 검색명 초기화
+		$('#s_subj_nm').val("");
+		// 검색명 focus
+		$('#s_subj_nm').focus();
+	}
+	
+	// 구분 변경에 대한 셋팅
+	function chgGbnCd(){
+		what_select = "H";
+		searchData();
+		// 검색명 초기화
+		$('#s_subj_nm').val("");
+		// 검색명 focus
+		$('#s_subj_nm').focus();
+	}
+ 	
+	// =================================== S : 콤보박스 셋팅  =================================== //
+	// 구분 초기화
+    function loadSelectBoxInit(){
+		$("#id_gbn_cd").empty();
+		var _html 		= "";
+    	var _mainHeader = "<select name=\"s_gbn_cd\" id=\"s_gbn_cd\" onchange=\"chgGbnCd();\" style=\"height:20px;\" >";
+    	_html += "<option value=''>이수구분선택</option></select>";
+    	$("#id_gbn_cd").append( _mainHeader + _html );
+	}
+	
+	// 구분 셋팅
+    function loadSelectBox(initYn){
+    	var js_gbn_data 	= "";
+    	var s_pobt_gb		= $("#s_pobt_gb").val();
+    	
+		if(tab_menu_val == '1'){
+			if( s_pobt_gb == "01" ){
+				js_gbn_data = parent.dataFrame.json01.rows;	
+			/* 2019년 1학기부터 사용하지 않음
+			}else if( s_pobt_gb == "02" ){
+				js_gbn_data = parent.dataFrame.json02.rows;
+			}else if( s_pobt_gb == "03" ){
+				js_gbn_data = parent.dataFrame.json03.rows;
+			}else if( s_pobt_gb == "04" ){
+				js_gbn_data = parent.dataFrame.json04.rows; */
+			}else if( s_pobt_gb == "05" ){
+				js_gbn_data = parent.dataFrame.json05.rows;
+			}else if( s_pobt_gb == "06" ){
+				js_gbn_data = parent.dataFrame.json06.rows;
+			}else if( s_pobt_gb == "07" ){
+				js_gbn_data = parent.dataFrame.json07.rows;
+			}else if( s_pobt_gb == "08" ){
+				js_gbn_data = parent.dataFrame.json08.rows;
+			// 기초 추가 - 2019/01/11	
+			}else if( s_pobt_gb == "09" ){
+				js_gbn_data = parent.dataFrame.json09.rows;
+			}
+		}
+		$("#id_gbn_cd").empty();
+		
+		var _html 		= "";
+    	var _mainHeader = "<select name=\"s_gbn_cd\" id=\"s_gbn_cd\" onchange=\"chgGbnCd();\" style=\"height:20px;\" >";
+    	
+		if(js_gbn_data.length > 0){
+			
+			_html += "<option value='' \>---선택---</option>";
+			
+			for(var i=0; i<js_gbn_data.length; i++){
+				//if( js_gbn_data[i].cd == "<=hakgwa>" ){
+				//	_html += "<option value=\""+js_gbn_data[i].cd+"\" selected \>"+js_gbn_data[i].hakgwa_nm+"</option>";		 
+				//}else{
+					// 학부가 없을 경우 소속(전공)으로 셋팅되게 처리 - 20200313
+					//if( js_gbn_data[i].cd == "472" ){
+						//_html += "<option value=\""+js_gbn_data[i].cd+"\" selected \>"+js_gbn_data[i].nm+"</option>";
+					//}else{
+						_html += "<option value=\""+js_gbn_data[i].cd+"\" \>"+js_gbn_data[i].nm+"</option>";
+					//}					
+				//}
+			}
+			_html += "</select>";
+		}else{
+			if( s_pobt_gb == "total" ){
+				_html += "<option value=''>이수구분선택</option></select>";
+			}else{
+				_html += "<option value=''>개설과목없음</option></select>";
+			}
+		}
+		$("#id_gbn_cd").append( _mainHeader + _html );
+		
+		// 최초 한번은 불러온다.
+		if( initYn == "Y"){
+			//개설과목 조회 > 왼쪽 - 개설과목 
+			lectList();
+		}
+    }
+ 	// =================================== E : 콤보박스 셋팅  =================================== //
+ 	
+	// =================================== S : 1. 개설과목 조회  =================================== //
+    //개설과목 조회 > 왼쪽 - 개설과목
+    function lectList(){
+   		var title 		=  '개설과목';
+		var js_data = "";
+		if(tab_menu_val == '1'){
+			js_data = parent.dataFrame.lecture.rows;
+		}		
+		$("#listArea").jqGrid({
+        	data : js_data,	
+            datatype: "local",
+			width : 300,
+			height : 310,
+            colNames:['과목','학과','교수',
+            		  '코드(히든)',/*'콤보(히든)'*/'이수구분(히든)','BD(히든)',
+            		  'KT(히든)','SS(히든)','SU(히든)','KG(히든)','JG(전공)'
+            		 ],
+            colModel:[
+            	{name:'nm',index:'nm', width:50,sortable:true},
+            	{name:'dh',index:'dh', width:50,sortable:true},
+            	{name:'gs',index:'gs', width:50,sortable:true},
+				{name:'cd',index:'cd',hidden:true},
+				//{name:'hg',index:'hg',hidden:true},
+				{name:'isu',index:'isu',hidden:true},
+				{name:'bd',index:'bd',hidden:true},
+				{name:'kt',index:'kt',hidden:true},
+				{name:'ss',index:'ss',hidden:true},
+				{name:'su',index:'su',hidden:true},
+				{name:'kg',index:'kg',hidden:true},
+				{name:'jg',index:'jg',hidden:true}
+            ],
+            rowNum: 1000,
+            hidegrid: true,//헤더버튼
+            gridview: true,
+            caption: "개설과목(학과)", 
+            //autowidth:true,
+            onSelectRow: function(rowid) {
+            	// NetFunnel
+        		top.NetFunnel_Action({action_id:'search'},function(ret){
+					isSelect 		= true;
+					var list 		= $("#listArea").getRowData(rowid);
+	    			var params		= list.cd;
+	    			var book_name 	= list.nm;
+					// 개설과목 상세 조회
+	    			var goUrl = context + "/core?attribute=lectDetailList&params="+params+"&menu="+tab_menu_val+"&fake="+new Date();
+					jQuery("#listLecture").jqGrid('setGridParam',{url:goUrl,page:1});
+	   				jQuery("#listLecture").jqGrid('setCaption',"선택 : "+book_name).trigger('reloadGrid');
+        		});	
+    		},
+    		error: function(req, status, error){
+				// 네퍼넬 Complete
+				top.NetFunnel_Complete({},function(ev,ret){});
+				alert("code:"+req.status+"\n"+"message:"+req.responseText+"\n"+"error:"+error);
+			},
+    		loadBeforeSend:function(){
+				$("#loading").show().css({position:'absolute'}).css({
+					 left: ($(window).width()) /2.6+'px',
+					 top: ($(document).scrollTop() + ($(window).height())/5) +'px'
+				 });
+			},
+    		loadComplete: function () {
+    			// 네퍼넬 Complete
+				//top.NetFunnel_Complete({},function(ev,ret){});
+    			$("#loading").hide();
+        	}
+        });
+		var caption = "개설과목";
+		var colNm 	= "교과목명";
+		if(tab_menu_val == '1'){
+			colNm 	= "교과목명";
+		}
+    	jQuery("#listArea").setCaption(caption);
+    	var colModel = $("#listArea").jqGrid('getGridParam', 'colModel'); // 컬럼명을 배열형태로 가져온다.  
+    	jQuery("#listArea").jqGrid("setLabel", colModel[0]['name'], colNm); // setLabel 함수로 0번째 컬럼명을 abc로 변경, for문으로 돌려도 된다.
+    	jQuery("#listArea").trigger("reloadGrid");
+    	// 과목 검색
+    	searchData();
+   	}
+	
+ 	// 개설과목 조회 > 오른쪽 상세과목정보
+   	function lectListDetail(){
+		var title 		=  ' 개설과목 조회 [ 총 조회정보 : <font color=red><b>0건</b></font> ] ';
+		$("#listLecture").jqGrid({
+    		url : context + "/core?attribute=lectDetailList&menu="+tab_menu_val+"&fake="+new Date(),
+			datatype: "json",
+			/*width : 600,*/
+			autowidth:true,
+			shrinkToFit:false, // 컬럼이 그리드 width에 맞춰 자동으로 맞춰질지 여부
+			height : 300,
+			// 필드위치이동 20200720 hkyim
+			colNames:['code','msg', '온/오프', '과목번호','과목명','subject','분반','학점','이수구분','교수명','대상학과',
+					  '제한인원','신청인원','대기인원','시간표','수업계획서',/*'개/폐강',*/'원어강좌',
+					  '비고','과목정보(히든값)','교수ID'],
+      		colModel:[
+		            	{name:'code',index:'code', hidden:true},
+		    			{name:'msg',index:'msg', hidden:true},
+		    			
+		    			{name:'kang_onoff_gbn_nm',index:'kang_onoff_gbn_nm', width:100, align:'center'},	// 온/오프라인
+						{name:'book_code',index:'book_code', width:60, align:'center'},			// 코드
+						{name:'book_name',index:'book_name', width:150, align:'left'},			// 교과목명
+						{name:'book_ename',index:'book_ename', width:150, align:'left'},			// 교과목명
+						{name:'bunban',index:'bunban', width:30, align:'center'},				// 분반						
+						{name:'hakjum',index:'hakjum', width:30, align:'center'},				// 학점						
+						{name:'isu_gbn_name',index:'isu_gbn_name', width:60, align:'center'},	// 이수구분명
+						{name:'gyosu_name',index:'gyosu_name', width:120, align:'center'},		// 교수명
+						{name:'daesang_hakgwa',index:'daesang_hakgwa', width:120, align:'center'},// 대상학과
+						
+						{name:'kang_su_temp_iw',index:'kang_su_temp_iw', width:60, align:'center'},		// 제한인원
+						{name:'kang_su_iw',index:'kang_su_iw', width:60, align:'center'},		// 신청인원
+						{name:'kang_wait_iw',index:'kang_wait_iw', width:60, align:'center'},	// 대기인원
+						{name:'plan_time',index:'plan_time', width:150, align:'center'},			// 시간표
+						{name:'plan',index:'plan',jsonmap:"plan", width:70, align:'center', formatter:function(){
+			                   return "<span class='btn2 gray'>수업계획서</span>"
+			            }},
+			            //{name:'kang_gbn_nm',index:'kang_gbn_nm', width:50, align:'center'},	// 개/폐강
+			            {name:'kang_lang_type_nm',index:'kang_lang_type_nm', width:60, align:'center'},	// 영어강좌
+						{name:'bigo',index:'bigo', width:200, align:'center'},					// 비고
+						// 히든값
+						{name:'params',index:'params', hidden:true},	// 과목코드
+						{name:'gyosu_id',index:'gyosu_id', hidden:true} // 교수코드	
+		            ],
+            rowNum: 1000,
+            gridview: true,
+            caption: title,
+            // loadtext : "Loading ...",  로딩이미지 대체
+            loadui: 'disable',
+            emptyrecords : "No data found.",
+            cmTemplate: {sortable:false}, //sort를 못하도록
+            multiSort:true,
+            onCellSelect:function(rowid,iCol,cellcontent,e){
+            	var cm 			= jQuery("#listLecture").jqGrid('getGridParam', 'colModel');
+				var colName 	= cm[iCol];
+				var rowData  	= jQuery("#listLecture").jqGrid('getRowData', rowid); 
+				// parameter작업 - 쿼리에서 묶었음
+				var params 		= rowData.params; 	// NVL(KANGTRNS.KANG_HAKBU,'') ||'@'|| NVL(KANGTRNS.KANG_HAKGWA,'') ||'@'|| NVL(KANGTRNS.KANG_BOOKCODE,'') ||'@'|| NVL(KANGTRNS.KANG_BOOKCODE_NO, 0) ||'@'||NVL(KANGTRNS.KANG_BUNBAN,'') ||'@'||NVL(KANGTRNS.KANG_ISU_GBN,'') ||'@'||NVL(TRIM(KANGTRNS.KANG_TI_GBN),'')||'@'||NVL(KANGTRNS.KANG_HAKJUM,0)||'@'||NVL(KANGTRNS.KANG_COMMONBOOK, '') AS params
+				var book_name 	= rowData.book_name;
+				var gyosu_id 	= rowData.gyosu_id;
+				var eng_yn 		= rowData.kang_lang_type_nm;
+				
+            	// 강의계획서 버튼 클릭
+		        if(colName['index'] == 'plan'){			        				        	
+					// 강의계획서
+		        	goPlanPop(params, gyosu_id, eng_yn);
+		        }
+		    },
+		    loadBeforeSend:function(){
+				$("#loading").show().css({position:'absolute'}).css({
+					 left: ($(window).width()) /2.6+'px',
+					 top: ($(document).scrollTop() + ($(window).height())/5) +'px'
+				 });
+			},
+			error: function(req, status, error){
+				// 네퍼넬 Complete
+				top.NetFunnel_Complete({},function(ev,ret){});
+				alert("code:"+req.status+"\n"+"message:"+req.responseText+"\n"+"error:"+error);
+			},
+		    loadComplete: function(){
+		    	// 네퍼넬 Complete
+		    	top.NetFunnel_Complete({},function(ev,ret){});
+		    	
+		    	$("#loading").hide();
+		    	var rowIDs = jQuery("#listLecture").jqGrid('getDataIDs');
+		    	//데이터 없을경우 메세지
+		    	if(rowIDs.length == 0){
+					var ment = (isSelect == true) ? "☞ "+title+"관련 데이터가 없습니다.<br/>과목을 클릭하여 조회해주세요" : " 조회 버튼을 클릭하여 과목을 조회하여 주세요 ";
+					$("#listLecture > tbody").append("<tr><td colspan='12' align='center' style='height:50px'><font color=red><b>"+ment+"</b></font></td></tr>");
+		    	}else{
+					var rowID 		= rowIDs[0];
+		            var rowData 	= jQuery('#listLecture').jqGrid ('getRowData', rowID);
+		        	// 코드 999일 경우 강제 로그아웃
+					if(rowData.code == '999'){
+		            	logout(rowData.msg);
+		            }
+				}
+		    	// 윈도우 창 리사이즈
+		        winResize();
+		     	// 개설과목 캡션 조회
+			    getCreditSubject();
+			}
+        });
+   	}
+ 	
+ 	// 검색버튼을 눌렀을 경우
+ 	function searchBtnPush(){
+ 		var s_pobt_gb   		= $('#s_pobt_gb').val();
+ 		var s_gbn_cd			= $('#s_gbn_cd').val(); 	// 구분코드
+		var search_subject_nm   = $("#s_subj_nm").val(); 	// 과목명
+		
+		if( (s_pobt_gb == "" && s_gbn_cd == "") && search_subject_nm == ""){
+			alert("검색조건을 선택하거나 입력하여 주세요");
+			return;
+		}
+		if( search_subject_nm != "" ){
+			what_select = "T";
+			$('#s_pobt_gb').val("");
+			loadSelectBoxInit(); // 구분콤보를 비워버린다.
+	    	searchData();
+			return;
+		}	
+		if( s_pobt_gb != "" && s_gbn_cd == "" ){
+			alert("구분을 선택하세요 ");
+			return;
+			//chgPobtCd();
+		}
+		if( s_pobt_gb != "" && s_gbn_cd != "" ){
+			chgGbnCd();	
+		}
+ 	}
+ 	
+ 	// 검색 데이터
+   	function searchData(){
+		var grid 				= $("#listArea");
+		var s_pobt_gb   		= $('#s_pobt_gb').val(); // 이수구분
+		var s_gbn_cd			= $('#s_gbn_cd').val(); // 구분코드
+		var search_subject_nm   = $("#s_subj_nm").val(); //과목명
+		
+		// === 콤보박스 변경되면 초기화 === // 
+		$("#listArea > tbody").children().remove();
+		$("#listLecture").GridUnload();
+		lectListDetail(); 
+		
+		// 검색필터
+		var myfilter = { groupOp: "AND", rules: [] };
+		// 개설과목조회일 경우만
+		if(tab_menu_val == '1'){
+			// 검색어로 조회했을 경우
+			if( what_select == "T"){
+				/* 검색 조회 */
+				if(search_subject_nm != ""){
+					myfilter =	{
+						    groupOp: "OR",
+						    rules: [ 
+								    	{ field: "nm", op:"cn", data:search_subject_nm },
+										{ field: "gs", op:"cn", data:search_subject_nm },
+										{ field: "dh", op:"cn", data:search_subject_nm }
+						    		],
+						    groups: []
+						};
+					$('#s_pobt_gb').val(""); // 이수구분을 조회로 변경
+					//$('#s_gbn_cd').val("");	   // 구분코드를 ""로 변경
+					loadSelectBoxInit();			// 구분콤보를 비워버린다.
+				}else{
+					alert("한글자 이상으로 검색하여 주세요");
+					myfilter.rules.push({field:"nm",op:"eq",data:" "});
+					//return;
+				}
+			// 이수구분 변경	
+			}else if( what_select == "S"){
+				// 이수구분 선택시
+				/*if( s_pobt_gb != "" ){
+					// 전체 조회일 경우	
+					if(s_pobt_gb == 'total'){
+						//전체과목을 조회함으로 필터를 걸지 않는다.
+					// 전공이 아닐 경우	
+					}else{
+						//myfilter.rules.push({field:"hg",op:"eq",data:s_pobt_gb});
+						myfilter.rules.push({field:"isu",op:"eq",data:s_gbn_cd});
+					}
+				}else{
+					myfilter.rules.push({field:"nm",op:"eq",data:" "});
+				} */
+				//alert("현재 이수구분 변경으론 이벤트를 하지 않습니다.");
+				$("#s_subj_nm").val("");
+				$('#s_gbn_cd').val("");
+			
+			// 구분 선택시	
+			}else if( what_select == "H" ){				
+				$("#s_subj_nm").val(""); //과목명				
+				
+				// (전공, 특별교과과정) 일 경우
+				if( s_pobt_gb == "01" || s_pobt_gb == "06" ){
+					//myfilter.rules.push({field:"hg",op:"eq",data:s_gbn_cd});
+					myfilter.rules.push({field:"jg",op:"eq",data:s_gbn_cd});
+				// 필수기초	
+				/* }else if( s_pobt_gb == "02" ){
+					myfilter.rules.push({field:"bd",op:"eq",data:s_gbn_cd}); */
+				// 기타	
+				}else if( s_pobt_gb == "08" ){
+					// 사이버 | 영문 | 이론 | 통합 | 실습과목이 아니라면...
+					if( s_gbn_cd == "CYBER" || s_gbn_cd == "ENG" || s_gbn_cd == "F1" || s_gbn_cd == "F2" || s_gbn_cd == "F3" ){
+						if( s_gbn_cd == "CYBER" ){
+							myfilter.rules.push({field:"kg",op:"eq",data:"Y"});
+						}else if( s_gbn_cd == 'ENG' ){
+							myfilter.rules.push({field:"kt",op:"eq",data:"Y"});
+						}else if( s_gbn_cd == 'F1' ){
+							myfilter.rules.push({field:"ss",op:"eq",data:"Y"});
+						}else if( s_gbn_cd == 'F2' ){
+							myfilter.rules.push({field:"ss",op:"eq",data:"Y"});
+							myfilter.rules.push({field:"su",op:"eq",data:"Y"});
+						}else if( s_gbn_cd == 'F3' ){
+							myfilter.rules.push({field:"su",op:"eq",data:"Y"});
+						}
+					}else{
+						//myfilter.rules.push({field:"hg",op:"eq",data:s_gbn_cd});
+						myfilter.rules.push({field:"jg",op:"eq",data:s_gbn_cd});
+					}
+				}else{
+					myfilter.rules.push({field:"isu",op:"eq",data:s_gbn_cd});
+				}
+				
+			}else{
+				myfilter.rules.push({field:"nm",op:"eq",data:" "});
+			}
+			
+		}else{
+			myfilter.rules.push({field:"nm",op:"eq",data:" "});
+			$("#s_subj_nm").val("");
+		}	
+		
+		grid[0].p.search = myfilter.rules.length>0;
+		$.extend(grid[0].p.postData,{filters:JSON.stringify(myfilter)});
+		grid.trigger("reloadGrid",[{page:1}]);
+
+		// 개설과목의 데이터 존재 여부
+		var rowIDs = jQuery("#listArea").jqGrid('getDataIDs');
+		//데이터 없을경우 메세지
+    	if(rowIDs.length == 0){
+			var ment = "";
+			if(s_pobt_gb == "init"){
+				ment = "<font color=red><b>이수구분 선택이나 검색하여 주세요.</b></font>";
+			}else{
+				ment = "<font color=red><b>조회된 과목이 존재하지 않습니다.</b></font>";
+			}
+			$("#listArea > tbody").append("<tr><td colspan='3' align='center' style='height:50px'><font color=red><b>"+ment+"</b></font></td></tr>");
+    	}else{
+    		var rowID 		= rowIDs[0];
+            var rowData 	= jQuery('#listArea').jqGrid ('getRowData', rowID);
+        	// 코드 999일 경우 강제 로그아웃
+			if(rowData.code == '999'){
+            	logout(rowData.msg);
+            }
+    	}
+		winResize();
+    }
+ 	// =================================== E : 1. 개설과목 조회  =================================== //
+ 	
+ 	// 개설과목 캡션 조회
+  	function getCreditSubject(){
+	  	var rowIDs = jQuery("#listLecture").jqGrid('getDataIDs');
+	   	// 상단 캡션 조회 건수 보여주기
+	   	var title 	   =  " 개설과목조회  [ 총 조회건수 : <font color=red><b>"+rowIDs.length+"건</b></font> ]";
+	   	jQuery("#listLecture").jqGrid('setCaption',title).trigger('reloadGrid');
+  	}
+   	
+   	// 보여지는  학점 정보 계산
+	function getCredit(grid, gbn){
+    	var rowIDs = grid.jqGrid('getDataIDs');
+		var suHakjum = 0;
+		var suCnt	 = 0;
+		var count = rowIDs.length;
+        for (var i = 0; i < count ; i++){
+            var rowID = rowIDs[i];
+            var rowData = grid.jqGrid ('getRowData', rowID);
+			suHakjum += parseFloat(rowData.suga_hakjum); //
+			suCnt++;
+        }
+		if(gbn == 'B'){
+        	grid.jqGrid('setCaption',"장바구니신청 내역 [ 신청학점 : <font color='#f6ff00'>"+suHakjum+"학점</font>, 신청과목수 : <font color='#f6ff00'>" + suCnt+"과목</font> ]</font>").trigger('reloadGrid');
+		}else{
+			grid.jqGrid('setCaption',"수강신청 내역 [ 총 신청학점 : <font color='#f6ff00'>"+suHakjum+"학점</font> | 신청과목수 : <font color='#f6ff00'>" + suCnt+"과목</font> ]</font>").trigger('reloadGrid');
+		}
+	}
+   	
+    function msgAlert(msg, obj){
+    	$("#msg").html(msg.replace(/\r|\n/gi,"<br>"));
+    	$("#message").dialog({
+    		/*position: { 
+	            my : 'center top', 
+	            at : 'center top', 
+	            of : '#listLecture' 
+	        },*/
+    		resizable: false,
+    		width: 400,
+    		height: 'auto',
+    		modal: true,
+    		closeOnEscape: true,
+    		resizable: false,
+            draggable: true,
+            buttons: {
+				" close ": function() {
+					if(obj != ''){
+						$(obj).focus();
+					}
+					$( this ).dialog( "close" );
+				}
+			}
+    	});
+    }
+    
+ 	// 장바구니신청  내역 
+    function loadBasket(){
+ 		var grid = $("#listBasket");
+ 		grid.jqGrid({
+ 	       	url : basketUrl,
+ 			datatype: "json",
+ 			//width : 1024, 			
+ 			autowidth:true,
+ 			shrinkToFit:false, // 컬럼이 그리드 width에 맞춰 자동으로 맞춰질지 여부
+ 			height : 300,
+ 			colNames:['온/오프','과목번호','교과목명','분반','이수구분','학점','교수명',
+				  	  '제한인원','신청인원','대기인원','시간표','수업계획서',/*'개/폐강',*/'영어강좌',
+				  	  '재이수','과목정보(히든값)','교수id','ord','gbn'],
+			colModel:[
+						{name:'kang_onoff_gbn_nm',index:'kang_onoff_gbn_nm', width:100, align:'center'},	// 온/오프라인
+						{name:'suga_bookcode',index:'suga_bookcode', align:'center', width:60},
+						{name:'kyom_name',index:'kyom_name', align:'left', width:350},
+						{name:'suga_bunban',index:'suga_bunban', align:'center', width:30},
+						{name:'suga_isu_gbn_name',index:'suga_isu_gbn_name', align:'center', width:60},						
+						{name:'suga_hakjum',index:'suga_hakjum', align:'center', width:30},
+						{name:'suga_gyosu_name',index:'suga_gyosu_name', align:'center', width:120},
+						
+						{name:'kang_su_temp_iw',index:'kang_su_temp_iw', width:60, align:'center'},		// 제한인원
+						{name:'kang_su_iw',index:'kang_su_iw', width:60, align:'center'},		// 신청인원
+						{name:'kang_wait_iw',index:'kang_wait_iw', width:60, align:'center'},	// 대기인원
+						{name:'plan_time',index:'plan_time', width:300, align:'center'},			// 시간표
+						{name:'plan',index:'plan',jsonmap:"plan", width:70, align:'center', formatter:function(){
+			                   return "<span class='btn2 gray'>수업계획서</span>"
+			            }},
+			            //{name:'kang_gbn_nm',index:'kang_gbn_nm', width:70, align:'center'},	// 개/폐강
+			            {name:'kang_lang_type_nm',index:'kang_lang_type_nm', width:60, align:'center'},	// 영어강좌
+						{name:'suga_jaeisu',index:'suga_jaeisu', align:'center', width:50},
+						// 히든값
+						{name:'params',index:'params', hidden:true},				// 과목코드
+						{name:'gyosu_id',index:'gyosu_id', hidden:true},
+						{name:'ord',index:'ord', hidden:true},
+						{name:'gbn',index:'gbn', hidden:true}
+	          	 ],
+ 	           rowNum: 50,
+ 	           rownumbers:true,
+ 	           gridview: true,
+ 	           caption: "예비신청 내역",
+ 	           loadui: 'disable',
+ 	           //loadtext : "Loading ...",
+ 	           //footerrow:true,
+ 	           emptyrecords : "No data found.",
+ 	           cmTemplate: {sortable:false}, //sort를 못하도록
+ 	           onCellSelect:function(rowid,iCol,cellcontent,e){
+ 	        	  	var cm 			= jQuery("#listBasket").jqGrid('getGridParam', 'colModel');
+ 					var colName 	= cm[iCol];
+ 					var rowData  	= jQuery("#listBasket").jqGrid('getRowData', rowid); 
+ 					// parameter작업 - 쿼리에서 묶었음
+ 					var params 		= rowData.params;
+ 					var gyosu_id 	= rowData.gyosu_id;
+					var eng_yn 		= rowData.kang_lang_type_nm;
+					
+	            	// 강의계획서 버튼 클릭
+			        if(colName['index'] == 'plan'){			        				        	
+						// 강의계획서
+			        	goPlanPop(params, gyosu_id, eng_yn);
+			        }
+ 			    },
+ 		    	loadComplete: function(){
+	 			    $("#loading").hide();
+	 			    var rowID = "";
+	 			    
+	 			    var rowIDs = jQuery("#listBasket").jqGrid('getDataIDs');
+	 		    	//세션체크
+	 		    	for (var i = 0; i < rowIDs.length ; i++){
+	 		    		rowID = rowIDs[i];
+	 		            var rowData = jQuery('#listBasket').jqGrid ('getRowData', rowID);
+	 					if(rowData.code == '999'){
+	 		            	logout(rowData.msg);
+	 		            	break;
+	 		            }
+	 					$('#listBasket').jqGrid('setRowData', rowID,rowData);
+ 		    		}
+ 			    grid.closest("div.ui-jqgrid-view").children("div.ui-jqgrid-titlebar").css("background-color", "#072A60");
+ 				var rowIDs = grid.jqGrid('getDataIDs');
+ 		    	var count = rowIDs.length;
+ 		        getCredit(grid,'B');
+
+ 		        if(rowIDs.length == 0){
+ 			       $("#listBasket > tbody").append("<tr><td colspan='15' align='center' style='height:30px'><b><font color=red>☞ 신청한 과목이 없습니다.</b></font></font></td></tr>");
+ 				}
+ 			}
+ 		});
+   	}
+    
+   // 수강신청 내역 
+   function loadSugang(){
+		var grid = $("#listSugang");
+		grid.jqGrid({
+	       	url : sugangUrl,
+			datatype: "json",
+			//width : 1000,
+			autowidth:true,
+ 			shrinkToFit:false, // 컬럼이 그리드 width에 맞춰 자동으로 맞춰질지 여부
+			height : 300,
+			colNames:['온/오프','과목번호','교과목명','분반','이수구분','학점','교수명','대기여부',
+				  	  '제한인원','신청인원','대기인원','시간표','수업계획서',/*'개/폐강',*/'영어강좌',
+				  	  '재이수','과목정보(히든값)','교수id'],
+			colModel:[
+				        {name:'kang_onoff_gbn_nm',index:'kang_onoff_gbn_nm', width:100, align:'center'},	// 온/오프라인
+						{name:'suga_bookcode',index:'suga_bookcode', align:'center', width:60},
+						{name:'kyom_name',index:'kyom_name', align:'left', width:350},
+						{name:'suga_bunban',index:'suga_bunban', align:'center', width:30},
+						{name:'suga_isu_gbn_name',index:'suga_isu_gbn_name', align:'center', width:60},						
+						{name:'suga_hakjum',index:'suga_hakjum', align:'center', width:30},
+						{name:'suga_gyosu_name',index:'suga_gyosu_name', align:'center', width:120},
+						{name:'wait_ord',index:'wait_ord', align:'center', width:90},
+						
+						{name:'kang_su_temp_iw',index:'kang_su_temp_iw', width:60, align:'center'},		// 제한인원
+						{name:'kang_su_iw',index:'kang_su_iw', width:60, align:'center'},		// 신청인원
+						{name:'kang_wait_iw',index:'kang_wait_iw', width:60, align:'center'},	// 대기인원
+						{name:'plan_time',index:'plan_time', width:300, align:'center'},			// 시간표
+						{name:'plan',index:'plan',jsonmap:"plan", width:70, align:'center', formatter:function(){
+			                   return "<span class='btn2 gray'>수업계획서</span>"
+			            }},
+			            //{name:'kang_gbn_nm',index:'kang_gbn_nm', width:70, align:'center'},	// 개/폐강
+			            {name:'kang_lang_type_nm',index:'kang_lang_type_nm', width:60, align:'center'},	// 영어강좌
+						{name:'suga_jaeisu',index:'suga_jaeisu', align:'center', width:50},
+						// 히든값
+						{name:'params',index:'params', hidden:true},	// 과목코드
+						{name:'gyosu_id',index:'gyosu_id', hidden:true}
+	        	 ],
+	           rowNum: 50,
+	           rownumbers:true,
+	           gridview: true,
+	           caption: "수강신청 내역",
+	           loadui: 'disable',
+	           //loadtext : "Loading ...",
+	           //footerrow:true,
+	           emptyrecords : "No data found.",
+	           cmTemplate: {sortable:false}, //sort를 못하도록
+	           onCellSelect:function(rowid,iCol,cellcontent,e){
+	        	    var cm 			= jQuery("#listSugang").jqGrid('getGridParam', 'colModel');
+					var colName 	= cm[iCol];
+					var rowData  	= jQuery("#listSugang").jqGrid('getRowData', rowid); 
+					// parameter작업 - 쿼리에서 묶었음
+					var params 		= rowData.params;
+					var gyosu_id 	= rowData.gyosu_id;
+					var eng_yn 		= rowData.kang_lang_type_nm;
+					
+	            	// 강의계획서 버튼 클릭
+			        if(colName['index'] == 'plan'){			        				        	
+						// 강의계획서
+			        	goPlanPop(params, gyosu_id, eng_yn);
+			        }
+			    },
+		    loadComplete: function(){
+			    $("#loading").hide();
+			    
+			    var rowIDs = jQuery("#listSugang").jqGrid('getDataIDs');
+		    	//세션체크
+		    	for (var i = 0; i < rowIDs.length ; i++){
+		    		var rowID = rowIDs[i];
+		            var rowData = jQuery('#listSugang').jqGrid ('getRowData', rowID);
+					$('#listSugang').jqGrid('setRowData', rowID,rowData);
+		    	}
+		    	
+			    grid.closest("div.ui-jqgrid-view").children("div.ui-jqgrid-titlebar").css("background-color", "#072A60");
+				var rowIDs = grid.jqGrid('getDataIDs');
+		    	var count = rowIDs.length;
+		        getCredit(grid,'S');
+
+		        if(rowIDs.length == 0){
+			       $("#listSugang > tbody").append("<tr><td colspan='15' align='center' style='height:30px'><font color=red><b>☞ 신청한 과목이 없습니다.</b></font></font></td></tr>");
+				}
+			}
+		});
+    }
+   
+    $(window).resize(function() {
+		winResize();
+    });
+
+    function winResize(){
+		
+		if($("#listArea").height() > 310){
+    		$("#listArea").setGridHeight(maxHeight);
+    	}else{
+    		//$("#listArea").setGridHeight($("#listArea").height());
+    		$("#listArea").setGridHeight(310);
+    	}
+		$("#listLecture").parents('div.ui-jqgrid-bdiv').css("max-height","310px");
+		var tmpWidth = $("#listArea").width()==null ? 0 : ($("#listArea").width()+10);
+		$("#listLecture").setGridWidth($("#Tabs").width() * per - tmpWidth);
+		$("#listBasket").setGridWidth($("#Tabs").width() * per - tmpWidth);
+		$("#listSugang").setGridWidth($("#Tabs").width() * per - tmpWidth);
+		if($("#listArea").length > 0){
+			$("#listBasket").setGridWidth($(window).width() * per);
+			$("#listSugang").setGridWidth($(window).width() * per);
+		}
+    }
+    
+    function logout(msg){
+		alert(msg);
+    	location.href="/hluv/jsp/core/logout/logOut.jsp?flag=logout";
+   	}
+    function initPage(msg){
+		alert(msg);
+    	top.location.href = location.protocol+"//haksa.hallym.ac.kr:443/hluv/";
+   	}
+    
+    /* function timeTableBasket(){		
+		var a_args = {};
+		goDialog(850, 1024,  "시간표", context + "/basket?attribute=timeTable&fake="+new Date(), a_args);
+	} */
+	function goDialog(a_width, a_height, a_title, a_url, a_args){
+		$( "#switDialog" ).dialog({
+			position: 'center',
+			resizable: false,
+			position: ["top",100],
+			width: a_width,
+			height: a_height,
+			title:a_title,
+			modal: true,
+			resizable: false,
+	        beforeClose: function() {
+	          $(this).empty();
+	        },
+		    open: function(event, ui) {
+		     $(this).load(context +a_url,a_args, function() {
+		     });
+		   }
+		});
+	}
+	
+	//시간표 
+    function timeTableBasket(){
+  	  	var h 		= 800;
+  	  	var w 		= 1024;
+  	  	var winl 	= (screen.width - w) / 2;
+  	  	var wint 	= (screen.height - h) / 2;
+  	  	winprops 	= 'height='+h+',width='+w+',top='+wint+',left='+winl+',scrollbars=yes,resizable=yes';
+  	  	url 		= context + "/basket?attribute=timeTable&fake="+new Date();
+  	  	window.open(url, "popTimeTable", winprops);
+    }
+  	
+  	//시간표 
+    function timeTableSugang(){
+  	  	var h 		= 800;
+  	  	var w 		= 1024;
+  	  	var winl 	= (screen.width - w) / 2;
+  	  	var wint 	= (screen.height - h) / 2;
+  	  	winprops 	= 'height='+h+',width='+w+',top='+wint+',left='+winl+',scrollbars=yes,resizable=yes';
+  	  	url 		= context + "/sugang?attribute=timeTable&fake="+new Date();
+  	  	window.open(url, "popTimeTable", winprops);
+    }
+  	
+  //강의계획서  팝업 
+  function goPlanPop( params, gyosu_id, eng_yn ){
+	var params	= "&params="+params+"&p_gyosu_id="+gyosu_id+"&p_eng_yn="+eng_yn;
+	var url     = context + "/core?attribute=lectPlan"+params;
+	var h 		= 750;
+	var w 		= 1024;
+	var winl 	= (screen.width - w) / 2;
+	var wint 	= (screen.height - h) / 2;
+	winprops 	= 'height='+h+',width='+w+',top='+wint+',left='+winl+',scrollbars=yes';
+	url 		= url+"&fake="+new Date();
+	window.open(url, "popPlan", winprops);
+  }
+</script>
+</head>
+<body style="">
+<div id="message" title="알림" style="display:none;"><table align="center"><tbody><tr><td valign="bottom"><div id="msg" style="font-size:9;font-color:black;"></div></td></tr></tbody></table></div>
+<div id="retake" title="재수강 대상 과목조회" style="display:none;"></div>
+<div id="macro" title="매크로 방지용 키입력" style="display:none;"></div>
+<div id="switDialog" style="display:none;"></div>
+<div id="loading" style="z-index: 2; display: none; position: absolute; left: 393.462px; top: 173px;"><img src="./loading.gif"></div>
+<form name="form" id="form" method="post">
+<input type="hidden" id="oldMenu" value="1">
+<input type="hidden" id="isClick">
+ 
+ <div id="Tabs" class="ui-tabs ui-widget ui-widget-content ui-corner-all" style="min-height: auto; overflow: hidden; height: 500px;">
+ 	<!--탭부분에 들어갈 내용입니다.-->
+     <ul class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all" role="tablist">
+     	  <li class="ui-state-default ui-corner-top ui-tabs-active ui-state-active" role="tab" tabindex="0" aria-controls="tabs-1" aria-labelledby="ui-id-1" aria-selected="true"><a href="https://haksa.hallym.ac.kr/hluv/core?attribute=mainSearch&amp;token=&amp;fake=Wed%20Aug%2026%202020%2000:15:53%20GMT+0900%20(%EB%8C%80%ED%95%9C%EB%AF%BC%EA%B5%AD%20%ED%91%9C%EC%A4%80%EC%8B%9C)#tabs-1" style="font-size:9pt;" class="ui-tabs-anchor" role="presentation" tabindex="-1" id="ui-id-1">개설과목조회</a></li>
+		  <li class="ui-state-default ui-corner-top" role="tab" tabindex="-1" aria-controls="tabs-2" aria-labelledby="ui-id-2" aria-selected="false"><a href="https://haksa.hallym.ac.kr/hluv/core?attribute=mainSearch&amp;token=&amp;fake=Wed%20Aug%2026%202020%2000:15:53%20GMT+0900%20(%EB%8C%80%ED%95%9C%EB%AF%BC%EA%B5%AD%20%ED%91%9C%EC%A4%80%EC%8B%9C)#tabs-2" style="font-size:9pt;" class="ui-tabs-anchor" role="presentation" tabindex="-1" id="ui-id-2">장바구니</a></li>
+		  <li class="ui-state-default ui-corner-top" role="tab" tabindex="-1" aria-controls="tabs-3" aria-labelledby="ui-id-3" aria-selected="false"><a href="https://haksa.hallym.ac.kr/hluv/core?attribute=mainSearch&amp;token=&amp;fake=Wed%20Aug%2026%202020%2000:15:53%20GMT+0900%20(%EB%8C%80%ED%95%9C%EB%AF%BC%EA%B5%AD%20%ED%91%9C%EC%A4%80%EC%8B%9C)#tabs-3" style="font-size:9pt;" class="ui-tabs-anchor" role="presentation" tabindex="-1" id="ui-id-3">수강신청</a></li>
+     </ul>
+    <div class="tabs-spacer"></div>
+	<div id="tabs-1" aria-labelledby="ui-id-1" class="ui-tabs-panel ui-widget-content ui-corner-bottom" role="tabpanel" aria-expanded="true" aria-hidden="false">
+		<div style=" height: auto; padding: 5px; background-color: #336699;font-size: 0.9em;color:#fff">
+			<span style="width:auto; ">▶ 이수구분</span>
+			<span style="width:auto;">
+				<select name="s_pobt_gb" id="s_pobt_gb" onchange="chgPobtCd();" style="height:20px;">
+					<option value="01">전공</option>
+					<!-- <option value="02">필수기초</option>
+					<option value="03">선택기초</option>
+					<option value="04">핵심교양</option> -->
+					<option value="09">기초</option>
+					<option value="05">일반교양</option>
+					<option value="06">특별교과과정</option>
+					<option value="07">한림소양</option>
+					<option value="08">기타</option>
+					<!-- <option value="total">--- 전체과목 ---</option> -->
+				</select>
+			</span>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<span style="width:auto; ">▶ 구분</span>
+			<span style="width:auto;" id="id_gbn_cd"><select name="s_gbn_cd" id="s_gbn_cd" onchange="chgGbnCd();" style="height:20px;"><option value="">---선택---</option><option value="224">인문학부</option><option value="225">국어국문학전공</option><option value="226">철학전공</option><option value="227">사학전공</option><option value="4050">영어영문학과</option><option value="4100">중국학과</option><option value="4150">일본학과</option><option value="4200">러시아학과</option><option value="655">글로컬융합인문학전공</option><option value="5000">심리학과</option><option value="5050">사회학과</option><option value="5260">사회복지학부</option><option value="5251">사회복지학</option><option value="5254">노인복지학</option><option value="5602">정치행정학과</option><option value="8398">광고홍보학과</option><option value="232">법학과</option><option value="680">경제학과</option><option value="456">경영학과</option><option value="421">금융재무학과</option><option value="6010">금융정보통계학과</option><option value="6100">화학과</option><option value="7030">생명과학과</option><option value="7060">바이오메디컬학과</option><option value="7320">환경생명공학과</option><option value="7350">식품영양학과</option><option value="7650">체육학과</option><option value="7630">언어청각학부</option><option value="343">언어병리학전공</option><option value="344">청각학전공</option><option value="8050">의예과</option><option value="8100">의학과</option><option value="683">간호학과</option><option value="428">글로벌학부</option><option value="429">글로벌비즈니스전공</option><option value="431">정보법과학전공</option><option value="432">한중통번역전공</option><option value="433">문화산업전공</option><option value="434">한국학전공</option><option value="437">의과학융합전공</option><option value="717">AI융합전공</option><option value="472">소프트웨어융합대학</option><option value="462">미디어스쿨</option><option value="464">디지털미디어콘텐츠전공</option><option value="463">언론방송융합미디어전공</option><option value="465">데이터과학융합스쿨</option><option value="466">데이터테크전공</option><option value="468">디지털금융정보전공</option><option value="467">임상의학통계전공</option><option value="469">나노융합스쿨</option><option value="471">디스플레이전공</option><option value="470">반도체전공</option><option value="714">ICT융합전공</option><option value="479">디지털인문예술전공</option><option value="693">한류크리에이터공공외교융합전공</option><option value="481">융합관광경영전공</option><option value="482">의약신소재전공</option><option value="477">융합신소재공학전공</option><option value="656">마케팅커뮤니케이션테크놀로지융합전공</option><option value="657">인터랙션디자인전공</option><option value="716">공공인재융합전공</option><option value="652">자유교양전공</option><option value="387">건강돌봄디자인전공</option><option value="483">사회혁신경영융합전공</option><option value="461">전자공학과</option></select></span>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<span style="width:auto;">▶ 검색조건</span>
+			<span style="width:auto;">
+				<input type="text" name="s_subj_nm" id="s_subj_nm" value="" size="15">
+			</span>
+			&nbsp;&nbsp;&nbsp;
+			<span style="width:auto;">				
+				<span class="btn2 gray" onclick="searchBtnPush();">검&nbsp;&nbsp;&nbsp;&nbsp;색</span>
+			</span>
+			<br>
+			<font color="yellow">※ 검색조건에 한글자 이상 검색어를 넣고 엔터키를 누르면 검색됩니다.(과목/교수명/학과명)</font>
+			
+		</div>	
+	
+		<hr style="width: 100%;color:#f1592a;border: thin solid red;">
+		<!-- 빠른수강 리스트 -->
+		<div id="jsonSpeed"></div>
+		
+		<table width="100%" border="0" align="center" id="viewer">
+			<tbody><tr valign="top">
+				<td width="10%"><div class="ui-jqgrid ui-widget ui-widget-content ui-corner-all" id="gbox_listArea" dir="ltr" style="width: 300px;"><div class="ui-widget-overlay jqgrid-overlay" id="lui_listArea"></div><div class="loading ui-state-default ui-state-active" id="load_listArea" style="display: none;">undefined</div><div class="ui-jqgrid-view" id="gview_listArea" style="width: 300px;"><div class="ui-jqgrid-titlebar ui-jqgrid-caption ui-widget-header ui-corner-top ui-helper-clearfix"><a role="link" class="ui-jqgrid-titlebar-close ui-corner-all HeaderButton" style="right: 0px;"><span class="ui-icon ui-icon-circle-triangle-n"></span></a><span class="ui-jqgrid-title">개설과목</span></div><div class="ui-state-default ui-jqgrid-hdiv" style="width: 300px;"><div class="ui-jqgrid-hbox"><table class="ui-jqgrid-htable" style="width:282px" role="grid" aria-labelledby="gbox_listArea" cellspacing="0" cellpadding="0" border="0"><thead><tr class="ui-jqgrid-labels" role="rowheader"><th id="listArea_nm" role="columnheader" class="ui-state-default ui-th-column ui-th-ltr" style="width: 89px;"><span class="ui-jqgrid-resize ui-jqgrid-resize-ltr" style="cursor: col-resize;">&nbsp;</span><div id="jqgh_listArea_nm" class="ui-jqgrid-sortable">교과목명<span class="s-ico" style=""><span sort="asc" class="ui-grid-ico-sort ui-icon-asc ui-icon ui-icon-triangle-1-n ui-sort-ltr"></span><span sort="desc" class="ui-grid-ico-sort ui-icon-desc ui-state-disabled ui-icon ui-icon-triangle-1-s ui-sort-ltr"></span></span></div></th><th id="listArea_dh" role="columnheader" class="ui-state-default ui-th-column ui-th-ltr" style="width: 89px;"><span class="ui-jqgrid-resize ui-jqgrid-resize-ltr" style="cursor: col-resize;">&nbsp;</span><div id="jqgh_listArea_dh" class="ui-jqgrid-sortable">학과<span class="s-ico" style="display:none"><span sort="asc" class="ui-grid-ico-sort ui-icon-asc ui-state-disabled ui-icon ui-icon-triangle-1-n ui-sort-ltr"></span><span sort="desc" class="ui-grid-ico-sort ui-icon-desc ui-state-disabled ui-icon ui-icon-triangle-1-s ui-sort-ltr"></span></span></div></th><th id="listArea_gs" role="columnheader" class="ui-state-default ui-th-column ui-th-ltr" style="width: 89px;"><span class="ui-jqgrid-resize ui-jqgrid-resize-ltr" style="cursor: col-resize;">&nbsp;</span><div id="jqgh_listArea_gs" class="ui-jqgrid-sortable">교수<span class="s-ico" style="display:none"><span sort="asc" class="ui-grid-ico-sort ui-icon-asc ui-state-disabled ui-icon ui-icon-triangle-1-n ui-sort-ltr"></span><span sort="desc" class="ui-grid-ico-sort ui-icon-desc ui-state-disabled ui-icon ui-icon-triangle-1-s ui-sort-ltr"></span></span></div></th><th id="listArea_cd" role="columnheader" class="ui-state-default ui-th-column ui-th-ltr" style="width: 150px; display: none;"><span class="ui-jqgrid-resize ui-jqgrid-resize-ltr" style="cursor: col-resize;">&nbsp;</span><div id="jqgh_listArea_cd" class="ui-jqgrid-sortable">코드(히든)<span class="s-ico" style="display:none"><span sort="asc" class="ui-grid-ico-sort ui-icon-asc ui-state-disabled ui-icon ui-icon-triangle-1-n ui-sort-ltr"></span><span sort="desc" class="ui-grid-ico-sort ui-icon-desc ui-state-disabled ui-icon ui-icon-triangle-1-s ui-sort-ltr"></span></span></div></th><th id="listArea_isu" role="columnheader" class="ui-state-default ui-th-column ui-th-ltr" style="width: 150px; display: none;"><span class="ui-jqgrid-resize ui-jqgrid-resize-ltr" style="cursor: col-resize;">&nbsp;</span><div id="jqgh_listArea_isu" class="ui-jqgrid-sortable">이수구분(히든)<span class="s-ico" style="display:none"><span sort="asc" class="ui-grid-ico-sort ui-icon-asc ui-state-disabled ui-icon ui-icon-triangle-1-n ui-sort-ltr"></span><span sort="desc" class="ui-grid-ico-sort ui-icon-desc ui-state-disabled ui-icon ui-icon-triangle-1-s ui-sort-ltr"></span></span></div></th><th id="listArea_bd" role="columnheader" class="ui-state-default ui-th-column ui-th-ltr" style="width: 150px; display: none;"><span class="ui-jqgrid-resize ui-jqgrid-resize-ltr" style="cursor: col-resize;">&nbsp;</span><div id="jqgh_listArea_bd" class="ui-jqgrid-sortable">BD(히든)<span class="s-ico" style="display:none"><span sort="asc" class="ui-grid-ico-sort ui-icon-asc ui-state-disabled ui-icon ui-icon-triangle-1-n ui-sort-ltr"></span><span sort="desc" class="ui-grid-ico-sort ui-icon-desc ui-state-disabled ui-icon ui-icon-triangle-1-s ui-sort-ltr"></span></span></div></th><th id="listArea_kt" role="columnheader" class="ui-state-default ui-th-column ui-th-ltr" style="width: 150px; display: none;"><span class="ui-jqgrid-resize ui-jqgrid-resize-ltr" style="cursor: col-resize;">&nbsp;</span><div id="jqgh_listArea_kt" class="ui-jqgrid-sortable">KT(히든)<span class="s-ico" style="display:none"><span sort="asc" class="ui-grid-ico-sort ui-icon-asc ui-state-disabled ui-icon ui-icon-triangle-1-n ui-sort-ltr"></span><span sort="desc" class="ui-grid-ico-sort ui-icon-desc ui-state-disabled ui-icon ui-icon-triangle-1-s ui-sort-ltr"></span></span></div></th><th id="listArea_ss" role="columnheader" class="ui-state-default ui-th-column ui-th-ltr" style="width: 150px; display: none;"><span class="ui-jqgrid-resize ui-jqgrid-resize-ltr" style="cursor: col-resize;">&nbsp;</span><div id="jqgh_listArea_ss" class="ui-jqgrid-sortable">SS(히든)<span class="s-ico" style="display:none"><span sort="asc" class="ui-grid-ico-sort ui-icon-asc ui-state-disabled ui-icon ui-icon-triangle-1-n ui-sort-ltr"></span><span sort="desc" class="ui-grid-ico-sort ui-icon-desc ui-state-disabled ui-icon ui-icon-triangle-1-s ui-sort-ltr"></span></span></div></th><th id="listArea_su" role="columnheader" class="ui-state-default ui-th-column ui-th-ltr" style="width: 150px; display: none;"><span class="ui-jqgrid-resize ui-jqgrid-resize-ltr" style="cursor: col-resize;">&nbsp;</span><div id="jqgh_listArea_su" class="ui-jqgrid-sortable">SU(히든)<span class="s-ico" style="display:none"><span sort="asc" class="ui-grid-ico-sort ui-icon-asc ui-state-disabled ui-icon ui-icon-triangle-1-n ui-sort-ltr"></span><span sort="desc" class="ui-grid-ico-sort ui-icon-desc ui-state-disabled ui-icon ui-icon-triangle-1-s ui-sort-ltr"></span></span></div></th><th id="listArea_kg" role="columnheader" class="ui-state-default ui-th-column ui-th-ltr" style="width: 150px; display: none;"><span class="ui-jqgrid-resize ui-jqgrid-resize-ltr" style="cursor: col-resize;">&nbsp;</span><div id="jqgh_listArea_kg" class="ui-jqgrid-sortable">KG(히든)<span class="s-ico" style="display:none"><span sort="asc" class="ui-grid-ico-sort ui-icon-asc ui-state-disabled ui-icon ui-icon-triangle-1-n ui-sort-ltr"></span><span sort="desc" class="ui-grid-ico-sort ui-icon-desc ui-state-disabled ui-icon ui-icon-triangle-1-s ui-sort-ltr"></span></span></div></th><th id="listArea_jg" role="columnheader" class="ui-state-default ui-th-column ui-th-ltr" style="width: 150px; display: none;"><span class="ui-jqgrid-resize ui-jqgrid-resize-ltr" style="cursor: col-resize;">&nbsp;</span><div id="jqgh_listArea_jg" class="ui-jqgrid-sortable">JG(전공)<span class="s-ico" style="display:none"><span sort="asc" class="ui-grid-ico-sort ui-icon-asc ui-state-disabled ui-icon ui-icon-triangle-1-n ui-sort-ltr"></span><span sort="desc" class="ui-grid-ico-sort ui-icon-desc ui-state-disabled ui-icon ui-icon-triangle-1-s ui-sort-ltr"></span></span></div></th></tr></thead></table></div></div><div class="ui-jqgrid-bdiv" style="width: 300px; height: 310px;"><div style="position:relative;"><div></div><table id="listArea" tabindex="0" cellspacing="0" cellpadding="0" border="0" role="grid" aria-multiselectable="false" aria-labelledby="gbox_listArea" class="ui-jqgrid-btable" style="width: 282px;"><tbody><tr role="row" id="175" tabindex="-1" class="ui-widget-content jqgrow ui-row-ltr"><td role="gridcell" style="" title="오디세이세미나3" aria-describedby="listArea_nm">오디세이세미나3</td><td role="gridcell" style="" title="국어국문학전공" aria-describedby="listArea_dh">국어국문학전공</td><td role="gridcell" style="" title="신서인" aria-describedby="listArea_gs">신서인</td><td role="gridcell" style="display:none;" title="006175@36012@225" aria-describedby="listArea_cd">006175@36012@225</td><td role="gridcell" style="display:none;" title="01" aria-describedby="listArea_isu">01</td><td role="gridcell" style="display:none;" title="006175" aria-describedby="listArea_bd">006175</td><td role="gridcell" style="display:none;" title="N" aria-describedby="listArea_kt">N</td><td role="gridcell" style="display:none;" title="N" aria-describedby="listArea_ss">N</td><td role="gridcell" style="display:none;" title="Y" aria-describedby="listArea_su">Y</td><td role="gridcell" style="display:none;" title="N" aria-describedby="listArea_kg">N</td><td role="gridcell" style="display:none;" title="225" aria-describedby="listArea_jg">225</td></tr><tr role="row" id="222" tabindex="-1" class="ui-widget-content jqgrow ui-row-ltr"><td role="gridcell" style="" title="오디세이세미나4" aria-describedby="listArea_nm">오디세이세미나4</td><td role="gridcell" style="" title="국어국문학전공" aria-describedby="listArea_dh">국어국문학전공</td><td role="gridcell" style="" title="박슬기" aria-describedby="listArea_gs">박슬기</td><td role="gridcell" style="display:none;" title="006183@25556@225" aria-describedby="listArea_cd">006183@25556@225</td><td role="gridcell" style="display:none;" title="01" aria-describedby="listArea_isu">01</td><td role="gridcell" style="display:none;" title="006183" aria-describedby="listArea_bd">006183</td><td role="gridcell" style="display:none;" title="N" aria-describedby="listArea_kt">N</td><td role="gridcell" style="display:none;" title="N" aria-describedby="listArea_ss">N</td><td role="gridcell" style="display:none;" title="Y" aria-describedby="listArea_su">Y</td><td role="gridcell" style="display:none;" title="N" aria-describedby="listArea_kg">N</td><td role="gridcell" style="display:none;" title="225" aria-describedby="listArea_jg">225</td></tr><tr role="row" id="296" tabindex="-1" class="ui-widget-content jqgrow ui-row-ltr"><td role="gridcell" style="" title="국문학개론" aria-describedby="listArea_nm">국문학개론</td><td role="gridcell" style="" title="국어국문학전공" aria-describedby="listArea_dh">국어국문학전공</td><td role="gridcell" style="" title="이승은" aria-describedby="listArea_gs">이승은</td><td role="gridcell" style="display:none;" title="101101@41588@225" aria-describedby="listArea_cd">101101@41588@225</td><td role="gridcell" style="display:none;" title="01" aria-describedby="listArea_isu">01</td><td role="gridcell" style="display:none;" title="101101" aria-describedby="listArea_bd">101101</td><td role="gridcell" style="display:none;" title="N" aria-describedby="listArea_kt">N</td><td role="gridcell" style="display:none;" title="Y" aria-describedby="listArea_ss">Y</td><td role="gridcell" style="display:none;" title="N" aria-describedby="listArea_su">N</td><td role="gridcell" style="display:none;" title="N" aria-describedby="listArea_kg">N</td><td role="gridcell" style="display:none;" title="225" aria-describedby="listArea_jg">225</td></tr><tr role="row" id="297" tabindex="-1" class="ui-widget-content jqgrow ui-row-ltr"><td role="gridcell" style="" title="국문학개론" aria-describedby="listArea_nm">국문학개론</td><td role="gridcell" style="" title="국어국문학전공" aria-describedby="listArea_dh">국어국문학전공</td><td role="gridcell" style="" title="조은별" aria-describedby="listArea_gs">조은별</td><td role="gridcell" style="display:none;" title="101101@89516@225" aria-describedby="listArea_cd">101101@89516@225</td><td role="gridcell" style="display:none;" title="01" aria-describedby="listArea_isu">01</td><td role="gridcell" style="display:none;" title="101101" aria-describedby="listArea_bd">101101</td><td role="gridcell" style="display:none;" title="N" aria-describedby="listArea_kt">N</td><td role="gridcell" style="display:none;" title="Y" aria-describedby="listArea_ss">Y</td><td role="gridcell" style="display:none;" title="N" aria-describedby="listArea_su">N</td><td role="gridcell" style="display:none;" title="N" aria-describedby="listArea_kg">N</td><td role="gridcell" style="display:none;" title="225" aria-describedby="listArea_jg">225</td></tr><tr role="row" id="298" tabindex="-1" class="ui-widget-content jqgrow ui-row-ltr"><td role="gridcell" style="" title="국어학강독" aria-describedby="listArea_nm">국어학강독</td><td role="gridcell" style="" title="국어국문학전공" aria-describedby="listArea_dh">국어국문학전공</td><td role="gridcell" style="" title="이병기" aria-describedby="listArea_gs">이병기</td><td role="gridcell" style="display:none;" title="101105@35460@225" aria-describedby="listArea_cd">101105@35460@225</td><td role="gridcell" style="display:none;" title="01" aria-describedby="listArea_isu">01</td><td role="gridcell" style="display:none;" title="101105" aria-describedby="listArea_bd">101105</td><td role="gridcell" style="display:none;" title="N" aria-describedby="listArea_kt">N</td><td role="gridcell" style="display:none;" title="Y" aria-describedby="listArea_ss">Y</td><td role="gridcell" style="display:none;" title="N" aria-describedby="listArea_su">N</td><td role="gridcell" style="display:none;" title="N" aria-describedby="listArea_kg">N</td><td role="gridcell" style="display:none;" title="225" aria-describedby="listArea_jg">225</td></tr><tr role="row" id="299" tabindex="-1" class="ui-widget-content jqgrow ui-row-ltr"><td role="gridcell" style="" title="현대시강독" aria-describedby="listArea_nm">현대시강독</td><td role="gridcell" style="" title="국어국문학전공" aria-describedby="listArea_dh">국어국문학전공</td><td role="gridcell" style="" title="박슬기" aria-describedby="listArea_gs">박슬기</td><td role="gridcell" style="display:none;" title="101111@25556@225" aria-describedby="listArea_cd">101111@25556@225</td><td role="gridcell" style="display:none;" title="01" aria-describedby="listArea_isu">01</td><td role="gridcell" style="display:none;" title="101111" aria-describedby="listArea_bd">101111</td><td role="gridcell" style="display:none;" title="N" aria-describedby="listArea_kt">N</td><td role="gridcell" style="display:none;" title="Y" aria-describedby="listArea_ss">Y</td><td role="gridcell" style="display:none;" title="N" aria-describedby="listArea_su">N</td><td role="gridcell" style="display:none;" title="N" aria-describedby="listArea_kg">N</td><td role="gridcell" style="display:none;" title="225" aria-describedby="listArea_jg">225</td></tr><tr role="row" id="300" tabindex="-1" class="ui-widget-content jqgrow ui-row-ltr"><td role="gridcell" style="" title="현대시론" aria-describedby="listArea_nm">현대시론</td><td role="gridcell" style="" title="국어국문학전공" aria-describedby="listArea_dh">국어국문학전공</td><td role="gridcell" style="" title="박슬기" aria-describedby="listArea_gs">박슬기</td><td role="gridcell" style="display:none;" title="101216@25556@225" aria-describedby="listArea_cd">101216@25556@225</td><td role="gridcell" style="display:none;" title="01" aria-describedby="listArea_isu">01</td><td role="gridcell" style="display:none;" title="101216" aria-describedby="listArea_bd">101216</td><td role="gridcell" style="display:none;" title="N" aria-describedby="listArea_kt">N</td><td role="gridcell" style="display:none;" title="Y" aria-describedby="listArea_ss">Y</td><td role="gridcell" style="display:none;" title="N" aria-describedby="listArea_su">N</td><td role="gridcell" style="display:none;" title="N" aria-describedby="listArea_kg">N</td><td role="gridcell" style="display:none;" title="225" aria-describedby="listArea_jg">225</td></tr><tr role="row" id="301" tabindex="-1" class="ui-widget-content jqgrow ui-row-ltr"><td role="gridcell" style="" title="국어형태론" aria-describedby="listArea_nm">국어형태론</td><td role="gridcell" style="" title="국어국문학전공" aria-describedby="listArea_dh">국어국문학전공</td><td role="gridcell" style="" title="이병기" aria-describedby="listArea_gs">이병기</td><td role="gridcell" style="display:none;" title="101219@35460@225" aria-describedby="listArea_cd">101219@35460@225</td><td role="gridcell" style="display:none;" title="01" aria-describedby="listArea_isu">01</td><td role="gridcell" style="display:none;" title="101219" aria-describedby="listArea_bd">101219</td><td role="gridcell" style="display:none;" title="N" aria-describedby="listArea_kt">N</td><td role="gridcell" style="display:none;" title="Y" aria-describedby="listArea_ss">Y</td><td role="gridcell" style="display:none;" title="N" aria-describedby="listArea_su">N</td><td role="gridcell" style="display:none;" title="N" aria-describedby="listArea_kg">N</td><td role="gridcell" style="display:none;" title="225" aria-describedby="listArea_jg">225</td></tr><tr role="row" id="302" tabindex="-1" class="ui-widget-content jqgrow ui-row-ltr"><td role="gridcell" style="" title="국어통사론" aria-describedby="listArea_nm">국어통사론</td><td role="gridcell" style="" title="국어국문학전공" aria-describedby="listArea_dh">국어국문학전공</td><td role="gridcell" style="" title="신서인" aria-describedby="listArea_gs">신서인</td><td role="gridcell" style="display:none;" title="101220@36012@225" aria-describedby="listArea_cd">101220@36012@225</td><td role="gridcell" style="display:none;" title="01" aria-describedby="listArea_isu">01</td><td role="gridcell" style="display:none;" title="101220" aria-describedby="listArea_bd">101220</td><td role="gridcell" style="display:none;" title="N" aria-describedby="listArea_kt">N</td><td role="gridcell" style="display:none;" title="Y" aria-describedby="listArea_ss">Y</td><td role="gridcell" style="display:none;" title="N" aria-describedby="listArea_su">N</td><td role="gridcell" style="display:none;" title="N" aria-describedby="listArea_kg">N</td><td role="gridcell" style="display:none;" title="225" aria-describedby="listArea_jg">225</td></tr><tr role="row" id="303" tabindex="-1" class="ui-widget-content jqgrow ui-row-ltr"><td role="gridcell" style="" title="현대작가론" aria-describedby="listArea_nm">현대작가론</td><td role="gridcell" style="" title="국어국문학전공" aria-describedby="listArea_dh">국어국문학전공</td><td role="gridcell" style="" title="박슬기" aria-describedby="listArea_gs">박슬기</td><td role="gridcell" style="display:none;" title="101304@25556@225" aria-describedby="listArea_cd">101304@25556@225</td><td role="gridcell" style="display:none;" title="01" aria-describedby="listArea_isu">01</td><td role="gridcell" style="display:none;" title="101304" aria-describedby="listArea_bd">101304</td><td role="gridcell" style="display:none;" title="N" aria-describedby="listArea_kt">N</td><td role="gridcell" style="display:none;" title="Y" aria-describedby="listArea_ss">Y</td><td role="gridcell" style="display:none;" title="N" aria-describedby="listArea_su">N</td><td role="gridcell" style="display:none;" title="N" aria-describedby="listArea_kg">N</td><td role="gridcell" style="display:none;" title="225" aria-describedby="listArea_jg">225</td></tr><tr role="row" id="304" tabindex="-1" class="ui-widget-content jqgrow ui-row-ltr"><td role="gridcell" style="" title="국어정보학" aria-describedby="listArea_nm">국어정보학</td><td role="gridcell" style="" title="국어국문학전공" aria-describedby="listArea_dh">국어국문학전공</td><td role="gridcell" style="" title="신서인" aria-describedby="listArea_gs">신서인</td><td role="gridcell" style="display:none;" title="101405@36012@225" aria-describedby="listArea_cd">101405@36012@225</td><td role="gridcell" style="display:none;" title="01" aria-describedby="listArea_isu">01</td><td role="gridcell" style="display:none;" title="101405" aria-describedby="listArea_bd">101405</td><td role="gridcell" style="display:none;" title="N" aria-describedby="listArea_kt">N</td><td role="gridcell" style="display:none;" title="Y" aria-describedby="listArea_ss">Y</td><td role="gridcell" style="display:none;" title="N" aria-describedby="listArea_su">N</td><td role="gridcell" style="display:none;" title="N" aria-describedby="listArea_kg">N</td><td role="gridcell" style="display:none;" title="225" aria-describedby="listArea_jg">225</td></tr><tr role="row" id="305" tabindex="-1" class="ui-widget-content jqgrow ui-row-ltr"><td role="gridcell" style="" title="근세시가론" aria-describedby="listArea_nm">근세시가론</td><td role="gridcell" style="" title="국어국문학전공" aria-describedby="listArea_dh">국어국문학전공</td><td role="gridcell" style="" title="김명준" aria-describedby="listArea_gs">김명준</td><td role="gridcell" style="display:none;" title="101406@36379@225" aria-describedby="listArea_cd">101406@36379@225</td><td role="gridcell" style="display:none;" title="01" aria-describedby="listArea_isu">01</td><td role="gridcell" style="display:none;" title="101406" aria-describedby="listArea_bd">101406</td><td role="gridcell" style="display:none;" title="N" aria-describedby="listArea_kt">N</td><td role="gridcell" style="display:none;" title="Y" aria-describedby="listArea_ss">Y</td><td role="gridcell" style="display:none;" title="N" aria-describedby="listArea_su">N</td><td role="gridcell" style="display:none;" title="N" aria-describedby="listArea_kg">N</td><td role="gridcell" style="display:none;" title="225" aria-describedby="listArea_jg">225</td></tr></tbody></table></div></div></div><div class="ui-jqgrid-resize-mark" id="rs_mlistArea">&nbsp;</div></div><br><div id="subject_comm" style="display:none;text-align:center;height:30;width:50;"></div><table></table></td>
+				<td width="90%"><div class="ui-jqgrid ui-widget ui-widget-content ui-corner-all" id="gbox_listLecture" dir="ltr" style="width: 687px;"><div class="ui-widget-overlay jqgrid-overlay" id="lui_listLecture"></div><div class="loading ui-state-default ui-state-active" id="load_listLecture">undefined</div><div class="ui-jqgrid-view" id="gview_listLecture" style="width: 687px;"><div class="ui-jqgrid-titlebar ui-jqgrid-caption ui-widget-header ui-corner-top ui-helper-clearfix"><a role="link" class="ui-jqgrid-titlebar-close ui-corner-all HeaderButton" style="right: 0px;"><span class="ui-icon ui-icon-circle-triangle-n"></span></a><span class="ui-jqgrid-title"> 개설과목조회  [ 총 조회건수 : <font color="red"><b>0건</b></font> ]</span></div><div class="ui-state-default ui-jqgrid-hdiv" style="width: 687px;"><div class="ui-jqgrid-hbox"><table class="ui-jqgrid-htable" style="width: 1560px;" role="grid" aria-labelledby="gbox_listLecture" cellspacing="0" cellpadding="0" border="0"><thead><tr class="ui-jqgrid-labels" role="rowheader"><th id="listLecture_code" role="columnheader" class="ui-state-default ui-th-column ui-th-ltr" style="width: 150px; display: none;"><span class="ui-jqgrid-resize ui-jqgrid-resize-ltr" style="cursor: col-resize;">&nbsp;</span><div id="jqgh_listLecture_code" class="ui-jqgrid-sortable">code<span class="s-ico" style="display:none"><span sort="asc" class="ui-grid-ico-sort ui-icon-asc ui-state-disabled ui-icon ui-icon-triangle-1-n ui-sort-ltr"></span><span sort="desc" class="ui-grid-ico-sort ui-icon-desc ui-state-disabled ui-icon ui-icon-triangle-1-s ui-sort-ltr"></span></span></div></th><th id="listLecture_msg" role="columnheader" class="ui-state-default ui-th-column ui-th-ltr" style="width: 150px; display: none;"><span class="ui-jqgrid-resize ui-jqgrid-resize-ltr" style="cursor: col-resize;">&nbsp;</span><div id="jqgh_listLecture_msg" class="ui-jqgrid-sortable">msg<span class="s-ico" style="display:none"><span sort="asc" class="ui-grid-ico-sort ui-icon-asc ui-state-disabled ui-icon ui-icon-triangle-1-n ui-sort-ltr"></span><span sort="desc" class="ui-grid-ico-sort ui-icon-desc ui-state-disabled ui-icon ui-icon-triangle-1-s ui-sort-ltr"></span></span></div></th><th id="listLecture_kang_onoff_gbn_nm" role="columnheader" class="ui-state-default ui-th-column ui-th-ltr" style="width: 100px;"><span class="ui-jqgrid-resize ui-jqgrid-resize-ltr" style="cursor: col-resize;">&nbsp;</span><div id="jqgh_listLecture_kang_onoff_gbn_nm" class="ui-jqgrid-sortable">온/오프<span class="s-ico" style="display:none"><span sort="asc" class="ui-grid-ico-sort ui-icon-asc ui-state-disabled ui-icon ui-icon-triangle-1-n ui-sort-ltr"></span><span sort="desc" class="ui-grid-ico-sort ui-icon-desc ui-state-disabled ui-icon ui-icon-triangle-1-s ui-sort-ltr"></span></span></div></th><th id="listLecture_book_code" role="columnheader" class="ui-state-default ui-th-column ui-th-ltr" style="width: 60px;"><span class="ui-jqgrid-resize ui-jqgrid-resize-ltr" style="cursor: col-resize;">&nbsp;</span><div id="jqgh_listLecture_book_code" class="ui-jqgrid-sortable">과목번호<span class="s-ico" style="display:none"><span sort="asc" class="ui-grid-ico-sort ui-icon-asc ui-state-disabled ui-icon ui-icon-triangle-1-n ui-sort-ltr"></span><span sort="desc" class="ui-grid-ico-sort ui-icon-desc ui-state-disabled ui-icon ui-icon-triangle-1-s ui-sort-ltr"></span></span></div></th><th id="listLecture_book_name" role="columnheader" class="ui-state-default ui-th-column ui-th-ltr" style="width: 150px;"><span class="ui-jqgrid-resize ui-jqgrid-resize-ltr" style="cursor: col-resize;">&nbsp;</span><div id="jqgh_listLecture_book_name" class="ui-jqgrid-sortable">과목명<span class="s-ico" style="display:none"><span sort="asc" class="ui-grid-ico-sort ui-icon-asc ui-state-disabled ui-icon ui-icon-triangle-1-n ui-sort-ltr"></span><span sort="desc" class="ui-grid-ico-sort ui-icon-desc ui-state-disabled ui-icon ui-icon-triangle-1-s ui-sort-ltr"></span></span></div></th><th id="listLecture_book_ename" role="columnheader" class="ui-state-default ui-th-column ui-th-ltr" style="width: 150px;"><span class="ui-jqgrid-resize ui-jqgrid-resize-ltr" style="cursor: col-resize;">&nbsp;</span><div id="jqgh_listLecture_book_ename" class="ui-jqgrid-sortable">subject<span class="s-ico" style="display:none"><span sort="asc" class="ui-grid-ico-sort ui-icon-asc ui-state-disabled ui-icon ui-icon-triangle-1-n ui-sort-ltr"></span><span sort="desc" class="ui-grid-ico-sort ui-icon-desc ui-state-disabled ui-icon ui-icon-triangle-1-s ui-sort-ltr"></span></span></div></th><th id="listLecture_bunban" role="columnheader" class="ui-state-default ui-th-column ui-th-ltr" style="width: 30px;"><span class="ui-jqgrid-resize ui-jqgrid-resize-ltr" style="cursor: col-resize;">&nbsp;</span><div id="jqgh_listLecture_bunban" class="ui-jqgrid-sortable">분반<span class="s-ico" style="display:none"><span sort="asc" class="ui-grid-ico-sort ui-icon-asc ui-state-disabled ui-icon ui-icon-triangle-1-n ui-sort-ltr"></span><span sort="desc" class="ui-grid-ico-sort ui-icon-desc ui-state-disabled ui-icon ui-icon-triangle-1-s ui-sort-ltr"></span></span></div></th><th id="listLecture_hakjum" role="columnheader" class="ui-state-default ui-th-column ui-th-ltr" style="width: 30px;"><span class="ui-jqgrid-resize ui-jqgrid-resize-ltr" style="cursor: col-resize;">&nbsp;</span><div id="jqgh_listLecture_hakjum" class="ui-jqgrid-sortable">학점<span class="s-ico" style="display:none"><span sort="asc" class="ui-grid-ico-sort ui-icon-asc ui-state-disabled ui-icon ui-icon-triangle-1-n ui-sort-ltr"></span><span sort="desc" class="ui-grid-ico-sort ui-icon-desc ui-state-disabled ui-icon ui-icon-triangle-1-s ui-sort-ltr"></span></span></div></th><th id="listLecture_isu_gbn_name" role="columnheader" class="ui-state-default ui-th-column ui-th-ltr" style="width: 60px;"><span class="ui-jqgrid-resize ui-jqgrid-resize-ltr" style="cursor: col-resize;">&nbsp;</span><div id="jqgh_listLecture_isu_gbn_name" class="ui-jqgrid-sortable">이수구분<span class="s-ico" style="display:none"><span sort="asc" class="ui-grid-ico-sort ui-icon-asc ui-state-disabled ui-icon ui-icon-triangle-1-n ui-sort-ltr"></span><span sort="desc" class="ui-grid-ico-sort ui-icon-desc ui-state-disabled ui-icon ui-icon-triangle-1-s ui-sort-ltr"></span></span></div></th><th id="listLecture_gyosu_name" role="columnheader" class="ui-state-default ui-th-column ui-th-ltr" style="width: 120px;"><span class="ui-jqgrid-resize ui-jqgrid-resize-ltr" style="cursor: col-resize;">&nbsp;</span><div id="jqgh_listLecture_gyosu_name" class="ui-jqgrid-sortable">교수명<span class="s-ico" style="display:none"><span sort="asc" class="ui-grid-ico-sort ui-icon-asc ui-state-disabled ui-icon ui-icon-triangle-1-n ui-sort-ltr"></span><span sort="desc" class="ui-grid-ico-sort ui-icon-desc ui-state-disabled ui-icon ui-icon-triangle-1-s ui-sort-ltr"></span></span></div></th><th id="listLecture_daesang_hakgwa" role="columnheader" class="ui-state-default ui-th-column ui-th-ltr" style="width: 120px;"><span class="ui-jqgrid-resize ui-jqgrid-resize-ltr" style="cursor: col-resize;">&nbsp;</span><div id="jqgh_listLecture_daesang_hakgwa" class="ui-jqgrid-sortable">대상학과<span class="s-ico" style="display:none"><span sort="asc" class="ui-grid-ico-sort ui-icon-asc ui-state-disabled ui-icon ui-icon-triangle-1-n ui-sort-ltr"></span><span sort="desc" class="ui-grid-ico-sort ui-icon-desc ui-state-disabled ui-icon ui-icon-triangle-1-s ui-sort-ltr"></span></span></div></th><th id="listLecture_kang_su_temp_iw" role="columnheader" class="ui-state-default ui-th-column ui-th-ltr" style="width: 60px;"><span class="ui-jqgrid-resize ui-jqgrid-resize-ltr" style="cursor: col-resize;">&nbsp;</span><div id="jqgh_listLecture_kang_su_temp_iw" class="ui-jqgrid-sortable">제한인원<span class="s-ico" style="display:none"><span sort="asc" class="ui-grid-ico-sort ui-icon-asc ui-state-disabled ui-icon ui-icon-triangle-1-n ui-sort-ltr"></span><span sort="desc" class="ui-grid-ico-sort ui-icon-desc ui-state-disabled ui-icon ui-icon-triangle-1-s ui-sort-ltr"></span></span></div></th><th id="listLecture_kang_su_iw" role="columnheader" class="ui-state-default ui-th-column ui-th-ltr" style="width: 60px;"><span class="ui-jqgrid-resize ui-jqgrid-resize-ltr" style="cursor: col-resize;">&nbsp;</span><div id="jqgh_listLecture_kang_su_iw" class="ui-jqgrid-sortable">신청인원<span class="s-ico" style="display:none"><span sort="asc" class="ui-grid-ico-sort ui-icon-asc ui-state-disabled ui-icon ui-icon-triangle-1-n ui-sort-ltr"></span><span sort="desc" class="ui-grid-ico-sort ui-icon-desc ui-state-disabled ui-icon ui-icon-triangle-1-s ui-sort-ltr"></span></span></div></th><th id="listLecture_kang_wait_iw" role="columnheader" class="ui-state-default ui-th-column ui-th-ltr" style="width: 60px;"><span class="ui-jqgrid-resize ui-jqgrid-resize-ltr" style="cursor: col-resize;">&nbsp;</span><div id="jqgh_listLecture_kang_wait_iw" class="ui-jqgrid-sortable">대기인원<span class="s-ico" style="display:none"><span sort="asc" class="ui-grid-ico-sort ui-icon-asc ui-state-disabled ui-icon ui-icon-triangle-1-n ui-sort-ltr"></span><span sort="desc" class="ui-grid-ico-sort ui-icon-desc ui-state-disabled ui-icon ui-icon-triangle-1-s ui-sort-ltr"></span></span></div></th><th id="listLecture_plan_time" role="columnheader" class="ui-state-default ui-th-column ui-th-ltr" style="width: 150px;"><span class="ui-jqgrid-resize ui-jqgrid-resize-ltr" style="cursor: col-resize;">&nbsp;</span><div id="jqgh_listLecture_plan_time" class="ui-jqgrid-sortable">시간표<span class="s-ico" style="display:none"><span sort="asc" class="ui-grid-ico-sort ui-icon-asc ui-state-disabled ui-icon ui-icon-triangle-1-n ui-sort-ltr"></span><span sort="desc" class="ui-grid-ico-sort ui-icon-desc ui-state-disabled ui-icon ui-icon-triangle-1-s ui-sort-ltr"></span></span></div></th><th id="listLecture_plan" role="columnheader" class="ui-state-default ui-th-column ui-th-ltr" style="width: 70px;"><span class="ui-jqgrid-resize ui-jqgrid-resize-ltr" style="cursor: col-resize;">&nbsp;</span><div id="jqgh_listLecture_plan" class="ui-jqgrid-sortable">수업계획서<span class="s-ico" style="display:none"><span sort="asc" class="ui-grid-ico-sort ui-icon-asc ui-state-disabled ui-icon ui-icon-triangle-1-n ui-sort-ltr"></span><span sort="desc" class="ui-grid-ico-sort ui-icon-desc ui-state-disabled ui-icon ui-icon-triangle-1-s ui-sort-ltr"></span></span></div></th><th id="listLecture_kang_lang_type_nm" role="columnheader" class="ui-state-default ui-th-column ui-th-ltr" style="width: 60px;"><span class="ui-jqgrid-resize ui-jqgrid-resize-ltr" style="cursor: col-resize;">&nbsp;</span><div id="jqgh_listLecture_kang_lang_type_nm" class="ui-jqgrid-sortable">원어강좌<span class="s-ico" style="display:none"><span sort="asc" class="ui-grid-ico-sort ui-icon-asc ui-state-disabled ui-icon ui-icon-triangle-1-n ui-sort-ltr"></span><span sort="desc" class="ui-grid-ico-sort ui-icon-desc ui-state-disabled ui-icon ui-icon-triangle-1-s ui-sort-ltr"></span></span></div></th><th id="listLecture_bigo" role="columnheader" class="ui-state-default ui-th-column ui-th-ltr" style="width: 200px;"><span class="ui-jqgrid-resize ui-jqgrid-resize-ltr" style="cursor: col-resize;">&nbsp;</span><div id="jqgh_listLecture_bigo" class="ui-jqgrid-sortable">비고<span class="s-ico" style="display:none"><span sort="asc" class="ui-grid-ico-sort ui-icon-asc ui-state-disabled ui-icon ui-icon-triangle-1-n ui-sort-ltr"></span><span sort="desc" class="ui-grid-ico-sort ui-icon-desc ui-state-disabled ui-icon ui-icon-triangle-1-s ui-sort-ltr"></span></span></div></th><th id="listLecture_params" role="columnheader" class="ui-state-default ui-th-column ui-th-ltr" style="width: 150px; display: none;"><span class="ui-jqgrid-resize ui-jqgrid-resize-ltr" style="cursor: col-resize;">&nbsp;</span><div id="jqgh_listLecture_params" class="ui-jqgrid-sortable">과목정보(히든값)<span class="s-ico" style="display:none"><span sort="asc" class="ui-grid-ico-sort ui-icon-asc ui-state-disabled ui-icon ui-icon-triangle-1-n ui-sort-ltr"></span><span sort="desc" class="ui-grid-ico-sort ui-icon-desc ui-state-disabled ui-icon ui-icon-triangle-1-s ui-sort-ltr"></span></span></div></th><th id="listLecture_gyosu_id" role="columnheader" class="ui-state-default ui-th-column ui-th-ltr" style="width: 150px; display: none;"><span class="ui-jqgrid-resize ui-jqgrid-resize-ltr" style="cursor: col-resize;">&nbsp;</span><div id="jqgh_listLecture_gyosu_id" class="ui-jqgrid-sortable">교수ID<span class="s-ico" style="display:none"><span sort="asc" class="ui-grid-ico-sort ui-icon-asc ui-state-disabled ui-icon ui-icon-triangle-1-n ui-sort-ltr"></span><span sort="desc" class="ui-grid-ico-sort ui-icon-desc ui-state-disabled ui-icon ui-icon-triangle-1-s ui-sort-ltr"></span></span></div></th></tr></thead></table></div></div><div class="ui-jqgrid-bdiv" style="height: 300px; max-height: 310px; width: 687px;"><div style="position:relative;"><div></div><table id="listLecture" class="ui-jqgrid-btable" tabindex="0" cellspacing="0" cellpadding="0" border="0" role="grid" aria-multiselectable="false" aria-labelledby="gbox_listLecture" style="width: 1560px;"><tbody><tr class="jqgfirstrow" role="row" style="height:auto"><td role="gridcell" style="height:0px;width:150px;display:none;"></td><td role="gridcell" style="height:0px;width:150px;display:none;"></td><td role="gridcell" style="height:0px;width:100px;"></td><td role="gridcell" style="height:0px;width:60px;"></td><td role="gridcell" style="height:0px;width:150px;"></td><td role="gridcell" style="height:0px;width:150px;"></td><td role="gridcell" style="height:0px;width:30px;"></td><td role="gridcell" style="height:0px;width:30px;"></td><td role="gridcell" style="height:0px;width:60px;"></td><td role="gridcell" style="height:0px;width:120px;"></td><td role="gridcell" style="height:0px;width:120px;"></td><td role="gridcell" style="height:0px;width:60px;"></td><td role="gridcell" style="height:0px;width:60px;"></td><td role="gridcell" style="height:0px;width:60px;"></td><td role="gridcell" style="height:0px;width:150px;"></td><td role="gridcell" style="height:0px;width:70px;"></td><td role="gridcell" style="height:0px;width:60px;"></td><td role="gridcell" style="height:0px;width:200px;"></td><td role="gridcell" style="height:0px;width:150px;display:none;"></td><td role="gridcell" style="height:0px;width:150px;display:none;"></td></tr><tr><td colspan="12" align="center" style="height:50px"><font color="red"><b>☞  개설과목 조회 [ 총 조회정보 : <font color="red"><b>0건</b></font> ] 관련 데이터가 없습니다.<br>과목을 클릭하여 조회해주세요</b></font></td></tr></tbody></table></div></div></div><div class="ui-jqgrid-resize-mark" id="rs_mlistLecture">&nbsp;</div></div><br><div id="comment" style="display:none;text-align:center;height:30;width:300;"></div><table></table></td>
+			</tr>
+		</tbody></table>
+				
+		<br>
+	</div>
+	<div id="tabs-2" style="display:none;" aria-labelledby="ui-id-2" class="ui-tabs-panel ui-widget-content ui-corner-bottom" role="tabpanel" aria-expanded="false" aria-hidden="true">
+		<table border="0" align="center" id="viewer" width="100%">
+			<tbody><tr>
+				<td width="90%" align="right">
+					<span class="btn2 gray2" onclick="timeTableBasket();" id="btnTime">시간표보기</span>
+				</td>
+			</tr>
+			<tr valign="top">
+				<td width="100%"><table id="listBasket"></table></td>
+			</tr>
+		</tbody></table>
+    </div>
+    
+    <div id="tabs-3" style="display:none;" aria-labelledby="ui-id-3" class="ui-tabs-panel ui-widget-content ui-corner-bottom" role="tabpanel" aria-expanded="false" aria-hidden="true">
+		<table border="0" align="center" id="viewer" width="100%">
+			<tbody><tr>
+				<td width="90%" align="right">
+					<span class="btn2 gray2" onclick="timeTableSugang();" id="btnTime">시간표보기</span>
+				</td>
+			</tr>
+			<tr valign="top">
+				<td width="100%"><table id="listSugang"></table>
+			</td></tr>
+		</tbody></table>
+    </div>
+ </div></form>
+
+</body></html>
