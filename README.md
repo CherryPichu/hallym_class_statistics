@@ -9,7 +9,7 @@
 
 <hr>
 
-![비대면 통계 게시글](비대면 통계 게시글.JPG)
+![비대면 통계 게시글](비대면_통계_게시글.JPG)
 
 한림대학교 학교 커뮤티니 좋아요 갯수 28개
 
@@ -19,4 +19,4 @@
 
 
 
-![전체 Pie 수정본](C:\GitCherryPichu\hallym_class_statistics\describe_Non_face_to_face_class_figure\전체 Pie 수정본.png)
+![전체 Pie 수정본](\describe_Non_face_to_face_class_figure\전체_Pie_수정본.png)
